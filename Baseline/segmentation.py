@@ -115,30 +115,17 @@ def order_inner_area(contours, hierarchy, max_area_index):
     return index, area[argsort_area]
 
 
-def remove_small(index, area, threshold):
-    return index[area > 2000]
-
-
-def remove_children(sort_index, hierarchy):
-    """
-    From largest to smallest:
-
-    :param sort_index:
-    :param hierarchy:
-    :return:
-    """
+def remove_small(index, area, threshold=2000):
+    return index[area > threshold]
 
 
 
-
-def draw_circle():
-    pass
 
 
 
 
 # Open image
-img = cv2.imread('coins.jpg')
+img = cv2.imread('dense_coins.jpg')
 
 # Resize so it fits on screen
 img = ResizeWithAspectRatio(img, width=600)
@@ -146,7 +133,7 @@ img = ResizeWithAspectRatio(img, width=600)
 # Create grey image
 im_grey = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 im_grey = cv2.medianBlur(im_grey, 5)
-im_thresh = cv2.adaptiveThreshold(im_grey, 255, cv2.ADAPTIVE_THRESH_MEAN_C,cv2.THRESH_BINARY, 11, 2)
+im_thresh = cv2.adaptiveThreshold(im_grey, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY, 11, 2)
 
 # ret, thresh = cv2.threshold(im_grey, 127, 255, 0)
 contours, hierarchy = cv2.findContours(im_thresh, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
@@ -162,7 +149,7 @@ child = argmax_inner_area(contours, hierarchy, max_ind)
 # cv2.drawContours(img, contours, child, (255, 0, 0), 3)
 
 # Draw LARGEST CHILD
-next_child = hierarchy[0][max_ind][2]
+# next_child = hierarchy[0][max_ind][2]
 # cv2.drawContours(img, contours, next_child, (255, 255, 0), 3)
 
 # Find order of children
@@ -175,22 +162,37 @@ contours = np.array(contours)
 large_children = remove_small(index, area, 2000)
 # cv2.drawContours(img, contours[large_children], -1, (255, 0, 0), 3)
 
+black = np.zeros(img.shape)
+
 # Circle LARGE CHILDREN
 for child in large_children:
     # From https://docs.opencv.org/3.4/dd/d49/tutorial_py_contour_features.html
     (x, y), r = cv2.minEnclosingCircle(contours[child])
     centre = (int(x), int(y))
     r = int(r)
-    cv2.circle(img, centre, r, (0, 0, 255), 3)
+    cv2.circle(black, centre, r, (255, 255, 255), -1)
 
-
+    x, y, w, h = cv2.boundingRect(contours[child])
+    cv2.rectangle(black, (x, y), (x+w, y+h), (0, 0, 255), 2)
+    cv2.rectangle(img, (x, y), (x+w, y+h), (0, 0, 255), 2)
 
 
 # Show the image
-cv2.imshow('All contours', img)  # All contours
+# cv2.imshow('All contours', img)  # All contours
+# cv2.imshow('BLACK', black)
+
+# Print out coins only
+# coins = img * black / 255
+black = black.astype(np.uint8)
+img = img.astype(np.uint8)
+coins = img & black
+
+cv2.imshow('Only coins', coins)
 
 # Necessary to keep Python from crashing
 cv2.waitKey(0)
+
+cv2.imwrite('Coins Galore.jpg', img)
 
 # Close windows
 cv2.destroyAllWindows()
