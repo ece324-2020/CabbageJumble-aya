@@ -129,7 +129,7 @@ def load_images_from_folder(folder):
     return images
 
 # Get list of images
-images = load_images_from_folder('../data/raw')
+images = load_images_from_folder('../data/david/raw')
 
 for i, img_original in enumerate(images):
     # Resize so it fits on screen
@@ -166,10 +166,11 @@ for i, img_original in enumerate(images):
     cv2.imshow(f'Image {i}', img)  # All circled
     key = cv2.waitKey(0)
     if key == ord(' '):
-        cv2.imwrite(f'../data/good_segment/good_img_{i}.jpg', img_original)
-
+        cv2.imwrite(f'../data/david/good_segment/good_img_{i}.jpg', img_original)
         # mask = mask_image(img)
+    elif key == ord('k'):
+        cv2.imwrite(f'../data/david/meh_segment/meh_img_{i}.jpg', img_original)
     else:
-        cv2.imwrite(f'../data/bad_segment/bad_img_{i}.jpg', img_original)
+        cv2.imwrite(f'../data/david/bad_segment/bad_img_{i}.jpg', img_original)
 
     cv2.destroyAllWindows()
