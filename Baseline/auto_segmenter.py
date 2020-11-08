@@ -153,6 +153,14 @@ for i, img_original in enumerate(images):
 
     # Circle LARGE CHILDREN
     for child in large_children:
+        """
+        Current:
+            - Save original image into folder
+        Save:
+            - Original image
+            - Mask
+            - Bounding rectangle crops?
+        """
         # From https://docs.opencv.org/3.4/dd/d49/tutorial_py_contour_features.html
         (x, y), r = cv2.minEnclosingCircle(contours[child])
         centre = (int(x), int(y))

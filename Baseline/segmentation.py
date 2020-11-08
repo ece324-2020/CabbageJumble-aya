@@ -125,7 +125,7 @@ def remove_small(index, area, threshold=2000):
 
 
 # Open image
-img = cv2.imread('dense_coins.jpg')
+img = cv2.imread('coins.jpg')
 
 # Resize so it fits on screen
 img = ResizeWithAspectRatio(img, width=600)
@@ -165,6 +165,7 @@ large_children = remove_small(index, area, 2000)
 black = np.zeros(img.shape)
 
 # Circle LARGE CHILDREN
+crop = []
 for child in large_children:
     # From https://docs.opencv.org/3.4/dd/d49/tutorial_py_contour_features.html
     (x, y), r = cv2.minEnclosingCircle(contours[child])
@@ -175,6 +176,8 @@ for child in large_children:
     x, y, w, h = cv2.boundingRect(contours[child])
     cv2.rectangle(black, (x, y), (x+w, y+h), (0, 0, 255), 2)
     cv2.rectangle(img, (x, y), (x+w, y+h), (0, 0, 255), 2)
+
+    crop.append((x,y,x+w,y+h))
 
 
 # Show the image
@@ -188,6 +191,16 @@ img = img.astype(np.uint8)
 coins = img & black
 
 cv2.imshow('Only coins', coins)
+cv2.waitKey(0)
+cv2.destroyAllWindows()
+
+for i, rect in enumerate(crop):
+    x0, y0, x1, y1 = rect
+    crop[i] = coins[y0-10:y1+10, x0-10:x1+10]
+    crop[i] = ResizeWithAspectRatio(crop[i], 600)
+    cv2.imshow(f'Coin {i}', crop[i])
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
 
 # Necessary to keep Python from crashing
 cv2.waitKey(0)
