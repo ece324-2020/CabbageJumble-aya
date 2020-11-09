@@ -1,6 +1,8 @@
 import numpy as np
 import cv2
 import os
+
+from library.load_images_from_folder import load_images_from_folder
 import matplotlib.pyplot as plt
 
 def ResizeWithAspectRatio(image, width=None, height=None, inter=cv2.INTER_AREA):
@@ -25,15 +27,14 @@ def ResizeWithAspectRatio(image, width=None, height=None, inter=cv2.INTER_AREA):
 
 def argmax_contour_area(contours):
     """
-    Definition:
-    max_contour_area(contours)
-    Inputs:
-    1. contours = list of contours (edges of a coloured region)
-    Functionality:
-    1. Finds maximum contour area
-    Outputs:
-    1. max_area_index = index of maximum contour
+    Find and return the index of the contour with the maximum area.
+    :param contours: list of contours (i.e. edges of a coloured region)
+    :return: int, argmax_area - index of contour with maximum area
     """
+
+    areas = np.array(map(cv2.contourArea, contours))
+    return np.argmax(areas)
+
 
     max_area = 0
     max_area_index = 0
@@ -119,17 +120,8 @@ def remove_small(index, area, threshold=2000):
     return index[area > threshold]
 
 
-def load_images_from_folder(folder):
-    # From https://stackoverflow.com/questions/30230592/loading-all-images-using-imread-from-a-given-folder
-    images = []
-    for filename in os.listdir(folder):
-        img = cv2.imread(os.path.join(folder,filename))
-        if img is not None:
-            images.append(img)
-    return images
-
 # Get list of images
-images = load_images_from_folder('../data/david/raw')
+images = load_images_from_folder('../../data/david/raw')
 
 for i, img_original in enumerate(images):
     # Resize so it fits on screen
@@ -174,11 +166,11 @@ for i, img_original in enumerate(images):
     cv2.imshow(f'Image {i}', img)  # All circled
     key = cv2.waitKey(0)
     if key == ord(' '):
-        cv2.imwrite(f'../data/david/good_segment/good_img_{i}.jpg', img_original)
+        cv2.imwrite(f'../../data/david/good_segment/good_img_{i}.jpg', img_original)
         # mask = mask_image(img)
     elif key == ord('k'):
-        cv2.imwrite(f'../data/david/meh_segment/meh_img_{i}.jpg', img_original)
+        cv2.imwrite(f'../../data/david/meh_segment/meh_img_{i}.jpg', img_original)
     else:
-        cv2.imwrite(f'../data/david/bad_segment/bad_img_{i}.jpg', img_original)
+        cv2.imwrite(f'../../data/david/bad_segment/bad_img_{i}.jpg', img_original)
 
     cv2.destroyAllWindows()

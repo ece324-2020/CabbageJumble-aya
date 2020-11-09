@@ -1,25 +1,6 @@
 import cv2
 import numpy as np
-
-
-def ResizeWithAspectRatio(image, width=None, height=None, inter=cv2.INTER_AREA):
-    """
-    From Yong Da Li's github. He stole it from someone else. The 2nd-4th parameters are optional.
-    """
-
-    dim = None
-    (h, w) = image.shape[:2]
-
-    if width is None and height is None:
-        return image
-    if width is None:
-        r = height / float(h)
-        dim = (int(w * r), height)
-    else:
-        r = width / float(w)
-        dim = (width, int(h * r))
-
-    return cv2.resize(image, dim, interpolation=inter)
+from library.ResizeWithAspectRatio import ResizeWithAspectRatio
 
 
 def crop_coin(img_path, label_path, padding: int = 0):
@@ -50,10 +31,6 @@ def crop_coin(img_path, label_path, padding: int = 0):
 
     # Overlay mask and img
     coins = img & mask
-    cv2.imshow('Only coins', coins)
-    cv2.imwrite('../temp.jpg', coins)
-    cv2.waitKey(0)
-    cv2.destroyAllWindows()
 
     # Cut out circles
     for i, label in enumerate(labels):
