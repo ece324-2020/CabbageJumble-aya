@@ -1,3 +1,10 @@
+"""
+Test File
+
+Testing segmentation.
+"""
+
+
 import numpy as np
 import cv2
 import matplotlib.pyplot as plt
@@ -119,25 +126,21 @@ def remove_small(index, area, threshold=2000):
     return index[area > threshold]
 
 
-
-
-
-
-
 # Open image
-img = cv2.imread('coins.jpg')
+img_original = cv2.imread('test_images/coins.jpg')
 
 # Resize so it fits on screen
-img = ResizeWithAspectRatio(img, width=600)
+img = ResizeWithAspectRatio(img_original, width=600)
 
 # Create grey image
 im_grey = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 im_grey = cv2.medianBlur(im_grey, 5)
 im_thresh = cv2.adaptiveThreshold(im_grey, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY, 11, 2)
 
-# ret, thresh = cv2.threshold(im_grey, 127, 255, 0)
+# Get contours
 contours, hierarchy = cv2.findContours(im_thresh, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
 
+# Find largest contour and
 max_ind = argmax_contour_area(contours)
 child = argmax_inner_area(contours, hierarchy, max_ind)
 
@@ -154,8 +157,6 @@ child = argmax_inner_area(contours, hierarchy, max_ind)
 
 # Find order of children
 index, area = order_inner_area(contours, hierarchy, max_ind)
-# plt.plot(area)
-# plt.show()
 
 # Draw CHILDREN > 2000 area
 contours = np.array(contours)
@@ -163,6 +164,10 @@ large_children = remove_small(index, area, 2000)
 # cv2.drawContours(img, contours[large_children], -1, (255, 0, 0), 3)
 
 black = np.zeros(img.shape)
+
+# Label
+labels = ''
+
 
 # Circle LARGE CHILDREN
 crop = []
@@ -173,11 +178,17 @@ for child in large_children:
     r = int(r)
     cv2.circle(black, centre, r, (255, 255, 255), -1)
 
+    scale = img_original.shape[0] / img.shape[0]
+    labels += f'{round(x*scale)}\t{round(y*scale)}\t{round(r*scale)}\n'
+
     x, y, w, h = cv2.boundingRect(contours[child])
-    cv2.rectangle(black, (x, y), (x+w, y+h), (0, 0, 255), 2)
-    cv2.rectangle(img, (x, y), (x+w, y+h), (0, 0, 255), 2)
+    # cv2.rectangle(black, (x, y), (x+w, y+h), (0, 0, 255), 2)
+    # cv2.rectangle(img, (x, y), (x+w, y+h), (0, 0, 255), 2)
 
     crop.append((x,y,x+w,y+h))
+
+with open('results/labels.txt', 'w') as f:
+    f.write(labels)
 
 
 # Show the image
@@ -199,13 +210,14 @@ for i, rect in enumerate(crop):
     crop[i] = coins[y0-10:y1+10, x0-10:x1+10]
     crop[i] = ResizeWithAspectRatio(crop[i], 600)
     cv2.imshow(f'Coin {i}', crop[i])
+
     cv2.waitKey(0)
     cv2.destroyAllWindows()
 
 # Necessary to keep Python from crashing
 cv2.waitKey(0)
 
-cv2.imwrite('Coins Galore.jpg', img)
+cv2.imwrite('test_images/Coins Galore.jpg', img)
 
 # Close windows
 cv2.destroyAllWindows()
