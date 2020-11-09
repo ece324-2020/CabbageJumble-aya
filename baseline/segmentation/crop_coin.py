@@ -1,6 +1,20 @@
 import cv2
 import numpy as np
 from library.ResizeWithAspectRatio import ResizeWithAspectRatio
+from library.store_circle import load_circle_coord
+
+def save_circle_coord(order):
+    """
+    Saves a array of circle coordinates as a text file.
+    :param order:
+    :return:
+    """
+    labels = ''
+    for i in order:
+        labels += f'{i[0]}\t{i[1]}\t{i[2]}\n'
+    print(labels)
+    with open('results/save_circle.txt', 'w') as f:
+        f.write(labels)
 
 
 def crop_coin(img_path, label_path, padding: int = 0):
@@ -10,17 +24,11 @@ def crop_coin(img_path, label_path, padding: int = 0):
     :param label_path: str - path to label. e.g. '../data/label/label_3141.txt'
     :return:
     """
-    # Open text
-    with open(label_path, 'r') as f:
-        labels = f.read()
+    labels = load_circle_coord(label_path)
 
     # Open image and create mask
     img = cv2.imread(img_path)
     mask = np.zeros(img.shape, dtype=np.uint8)
-
-    # Split by row and column and cast to int
-    labels = labels.strip().split('\n')
-    labels = [list(map(int, label.split('\t'))) for label in labels]
 
     # Draw white circles on mask
     for i, label in enumerate(labels):

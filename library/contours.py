@@ -1,3 +1,10 @@
+"""
+# Contour Functions
+
+Functions dealing with contours, duh.
+"""
+
+
 import numpy as np
 import cv2
 
