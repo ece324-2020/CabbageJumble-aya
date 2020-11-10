@@ -54,8 +54,9 @@ def main():
             labels = labels.strip().split('\n')
             labels = np.array([list(map(int, label.split('\t'))) for label in labels])
             
-            
+            print("hello")
             lines = np.argsort(labels[:, 2], axis=0)
+            print(lines)
             lines = labels[lines]
             
             
@@ -99,7 +100,7 @@ def main():
     pygame.display.update()
     pos = None
     myfont = pygame.font.SysFont("fontname", 50)
-    count = 355
+    count = 562
     while True:
          clock.tick(90)
          draw_buttons(surface,8)
@@ -125,11 +126,21 @@ def main():
                     img_dir = pygame.transform.scale(img_dir,(S_WIDTH,S_HEIGHT))
                  if match != None:
                     try:
-                       info = open(f'{txtfolder}/{match}', 'r')
-                       with info as draw:
-                          lines = draw.readlines()
+                       #info = open(f'{txtfolder}/{match}', 'r')
+                       #with info as draw:
+                       #   lines = draw.readlines()
+                       with open(f'{txtfolder}/{match}', 'r') as f:
+                          labels = f.read()
+            
+                       labels = labels.strip().split('\n')
+                       labels = np.array([list(map(int, label.split('\t'))) for label in labels])
+                    
+                       lines = np.argsort(labels[:, 2], axis=0)
+                       print(lines)
+                       lines = labels[lines]
                        for l in lines:
-                          as_list = re.split("\t|\n", l)
+                          #as_list = re.split("\t|\n", l)
+                          as_list = l
                           todraw+= [(  20+  int( int(as_list[0]) *S_WIDTH/width),
                                    int(S_HEIGHT/height*int(as_list[1])) +20   )]
                           rad+= [int(float(as_list[2])*S_WIDTH/width)]

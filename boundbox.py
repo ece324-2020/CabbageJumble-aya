@@ -29,7 +29,8 @@ def event(surface, pos, todraw,rad, screen, redo, redorad,  index,pictures, prev
                img = ndimage.rotate(img,90)
                img = img[::-1,:]
                if len(pictures)>0:
-                   plt.imsave(f"{dir_save}/{save_index}.jpeg", img)
+                   org_image = plt.imread(f"bad_images/{pictures[index]}")
+                   plt.imsave(f"{dir_save}/{save_index}.jpeg", org_image)
                    with open(f"{txtsave}/{save_index}.txt", 'w') as f:
                        for i in range(len(todraw)):
                            f.write(f"{int((todraw[i][0]-19)*width/S_WIDTH)}\t{int((todraw[i][1]-19)*height/S_HEIGHT)}\t{int(0.5+rad[i]*width/S_WIDTH)}\n")
@@ -70,8 +71,8 @@ def event(surface, pos, todraw,rad, screen, redo, redorad,  index,pictures, prev
                img = ndimage.rotate(img,90)
                img = img[::-1,:]
                if len(pictures)>0:
-                   print(f"This is the ave index{save_index}")
-                   plt.imsave(f"{dir_save}/{save_index}.jpeg", img)
+                   org_image = plt.imread(f"bad_images/{pictures[index]}")
+                   plt.imsave(f"{dir_save}/{save_index}.jpeg", org_image)
                    with open(f"{txtsave}/{save_index}.txt", 'w') as f:
                        for i in range(len(todraw)):
                            f.write(f"{int((todraw[i][0]-19)*width/S_WIDTH)}\t{int((todraw[i][1]-19)*height/S_HEIGHT)}\t{int(0.5+rad[i]*width/S_WIDTH)}\n")
