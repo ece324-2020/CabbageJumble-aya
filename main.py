@@ -18,7 +18,7 @@ def main():
     surface = screen.convert()
     match = None
     todraw = []
-    rad  = []
+    rad = []
     redo, redorad = [], []
     pictures, txt = folder_img(dir, txtfolder)
    
@@ -26,7 +26,7 @@ def main():
     img_dir = None
     match = txt[0]
     index, prevind = 0, 0
-    if len(pictures) >  0:
+    if len(pictures) > 0:
         img = plt.imread(f"{dir}/{pictures[0]}")
         img_dir = pygame.image.load(f"{dir}/{pictures[0]}").convert()
         height = img.shape[0]
@@ -53,13 +53,10 @@ def main():
             
             labels = labels.strip().split('\n')
             labels = np.array([list(map(int, label.split('\t'))) for label in labels])
-            
-            
+
             lines = np.argsort(labels[:, 2], axis=0)
             lines = labels[lines]
-            
-            
-         #  print("OK")
+            print(lines)
             
             for l in lines:
                
@@ -99,7 +96,7 @@ def main():
     pygame.display.update()
     pos = None
     myfont = pygame.font.SysFont("fontname", 50)
-    count = 355
+    count = 410
     while True:
          clock.tick(90)
          draw_buttons(surface,8)
