@@ -129,8 +129,12 @@ def load_images_from_folder(folder):
     return images
 
 # Get list of images
-images = load_images_from_folder('../data/david/raw')
+images = load_images_from_folder('David_images/David - images/raw')
+#print(images)
 
+count = 295
+count1 = 108
+count2 = 25
 for i, img_original in enumerate(images):
     # Resize so it fits on screen
     img = ResizeWithAspectRatio(img_original, width=600)
@@ -152,9 +156,16 @@ for i, img_original in enumerate(images):
     large_children = remove_small(index, area, 2000)
 
     # Circle LARGE CHILDREN
+    all_x = []
+    all_y = []
+    all_r = []
     for child in large_children:
         # From https://docs.opencv.org/3.4/dd/d49/tutorial_py_contour_features.html
         (x, y), r = cv2.minEnclosingCircle(contours[child])
+        scale = img_original.shape[0] / img.shape[0]
+        all_x.append(int(x*scale))
+        all_y.append(int(y*scale))
+        all_r.append(int(r*scale))
         centre = (int(x), int(y))
         r = int(r)
         cv2.circle(img, centre, r, (0, 0, 255), 3)
@@ -165,12 +176,24 @@ for i, img_original in enumerate(images):
 
     cv2.imshow(f'Image {i}', img)  # All circled
     key = cv2.waitKey(0)
-    if key == ord(' '):
-        cv2.imwrite(f'../data/david/good_segment/good_img_{i}.jpg', img_original)
-        # mask = mask_image(img)
-    elif key == ord('k'):
-        cv2.imwrite(f'../data/david/meh_segment/meh_img_{i}.jpg', img_original)
+    if key == ord('1'):
+        cv2.imwrite(f'Final_images/{count}.jpg', img_original)
+        with open(f'Final_labels/{count}.txt', 'a') as f: 	
+            for i in range(len(all_x)):
+	            f.write(f'{all_x[i]}\t{all_y[i]}\t{all_r[i]}\n')
+        print(count)
+        count+=1
+
+    elif key == ord('2'):
+        cv2.imwrite(f'meh_images/{count1}.jpg', img_original)
+        with open(f'meh_images_labels/{count1}.txt', 'a') as f: 	
+	        for i in range(len(all_x)):
+	            f.write(f'{all_x[i]}\t{all_y[i]}\t{all_r[i]}\n')
+        #print(count1)
+        count1+=1
     else:
-        cv2.imwrite(f'../data/david/bad_segment/bad_img_{i}.jpg', img_original)
+        cv2.imwrite(f'bad_images/{count2}.jpg', img_original)
+        count2+=1
 
     cv2.destroyAllWindows()
+
