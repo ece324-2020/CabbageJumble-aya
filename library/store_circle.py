@@ -29,6 +29,7 @@ def load_circle_coord(file_path, order=False):
     labels = np.array([list(map(int, label.split('\t'))) for label in labels])
 
     if order:
-        labels = np.argsort(labels[:, 2], axis=0)[::-1]
+        index = np.argsort(labels[:, 2], axis=0)[::-1]
+        labels = labels[index]
 
     return labels

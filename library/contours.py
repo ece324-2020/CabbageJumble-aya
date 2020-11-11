@@ -26,6 +26,7 @@ def calculate_areas(contours):
     :param contours:
     :return:
     """
+    # Calculate list of areas in place
     areas = np.array(list(map(cv2.contourArea, contours)))
     return areas
 
