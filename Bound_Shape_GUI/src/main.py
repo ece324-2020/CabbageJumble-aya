@@ -100,7 +100,7 @@ def main():
     pygame.display.update()
     pos = None
     myfont = pygame.font.SysFont("fontname", 50)
-    count = 410
+    count = 562
     while True:
          clock.tick(90)
          draw_buttons(surface,8)

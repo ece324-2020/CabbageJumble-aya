@@ -29,7 +29,7 @@ def event(surface, pos, todraw,rad, screen, redo, redorad,  index,pictures, prev
                img = ndimage.rotate(img,90)
                img = img[::-1,:]
                if len(pictures)>0:
-                   org_image = plt.imread(f"data_labelling/david-images/{pictures[index]}")
+                   org_image = plt.imread(f"{dir}/{pictures[index]}")
                    plt.imsave(f"{dir_save}/{save_index}.jpeg", org_image)
                    with open(f"{txtsave}/{save_index}.txt", 'w') as f:
                        for i in range(len(todraw)):
@@ -71,7 +71,7 @@ def event(surface, pos, todraw,rad, screen, redo, redorad,  index,pictures, prev
                img = ndimage.rotate(img,90)
                img = img[::-1,:]
                if len(pictures)>0:
-                   org_image = plt.imread(f"data_labelling/david-images/{pictures[index]}")
+                   org_image = plt.imread(f"{dir}/{pictures[index]}")
                    plt.imsave(f"{dir_save}/{save_index}.jpeg", org_image)
                    with open(f"{txtsave}/{save_index}.txt", 'w') as f:
                        for i in range(len(todraw)):
