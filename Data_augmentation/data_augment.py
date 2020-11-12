@@ -114,7 +114,7 @@ horizontal_flip_transforms = transforms.Compose([
     #transforms.RandomHorizontalFlip(p=1)
     #transforms.RandomPerspective(distortion_scale=0.5, p=1, interpolation=2, fill=0)
     #transforms.RandomResizedCrop((600,600), scale=(0.08, 1.0), ratio=(0.75, 1.3333333333333333), interpolation=2)  #transforms.Resize(size, interpolation=2)
-    transforms.RandomAffine((180,180), translate=None, scale=None, shear=None, resample=0, fillcolor=0)
+    #transforms.RandomAffine((180,180), translate=None, scale=None, shear=None, resample=0, fillcolor=0)
     #transforms.ColorJitter(brightness=0, contrast=0, saturation=0, hue=0)
     #transforms.functional.adjust_brightness(img: torch.Tensor, brightness_factor: float)
     #transforms.functional.adjust_contrast(img: torch.Tensor, contrast_factor: float)
@@ -133,15 +133,15 @@ for idx,i in enumerate(all_images):
     #convert to tensor
     image = torch.from_numpy(image)
     #for debugging to displaying image
-    #show_numpy_image(image)
+    show_numpy_image(image)
 
     #permute to what RandomHorizontalFlip wants
-    image = image.permute(2,0,1)
-    transformed_image = horizontal_flip_transforms(image)
+    #image = image.permute(2,0,1)
+    #transformed_image = horizontal_flip_transforms(image)
 
     #adjust label accordingly if transform was applied
-    label_index = labels_image_index_to_list_index[index_of_image]
-    same_image = check_same_image_need_same_size(image,transformed_image)
+    #label_index = labels_image_index_to_list_index[index_of_image]
+    #same_image = check_same_image_need_same_size(image,transformed_image)
     
     #adjust for horizontal flip
     '''
@@ -149,20 +149,24 @@ for idx,i in enumerate(all_images):
         relabel_coords_horizontal_flip(label_index,image,labels)
     '''
     #adjust for rotation
-    label_index = labels_image_index_to_list_index[index_of_image]
-    relabel_coords_180_rotation(label_index,image,labels)
+    #label_index = labels_image_index_to_list_index[index_of_image]
+    #relabel_coords_180_rotation(label_index,image,labels)
     
 
+
     #permute back
-    transformed_image = transformed_image.permute(1,2,0)
-    transformed_image = transformed_image.numpy()
-    #show_numpy_image(transformed_image)
+    #transformed_image = transformed_image.permute(1,2,0)
+    #transformed_image = transformed_image.numpy()
+    
+    show_numpy_image(transformed_image)
     #cv2.imshow(f'Hello',transformed_image)
     #could write some function to display the image and see if it's okay, if good then we can write it
     #cv2.imshow(f'Image {i}', img)  # All circled
     #key = cv2.waitKey(0)
-    
-    #transformed_image[0,:,:],transformed_image[1,:,:],transformed_image[2,:,:] = transformed_image[2,:,:],transformed_image[0,:,:],transformed_image[1,:,:]
+    #BGR  RGB
+    #transformed_image[0,:,:],transformed_image[1,:,:],transformed_image[2,:,:] = transformed_image[2,:,:],transformed_image[1,:,:],transformed_image[0,:,:]
+    transformed_image = transformed_image[:,:,::-1]
+    print(transformed_image.shape)
     cv2.imwrite(f'{args.save_images_folder_path}/{index_of_image}.jpg', transformed_image)
     with open(f'{args.save_labels_folder_path}/{index_of_image}.txt', 'w') as f:
         for j in range(len(labels[labels_image_index_to_list_index[index_of_image]])):
