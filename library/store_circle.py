@@ -85,9 +85,9 @@ def decode_HT(entry):
     return HT
 
 
-def add_value_and_HT(file_path, write_to_file: bool = False, default_value: int = 0, default_HT: str = 'H'):
+def add_value_and_HT(file_path, write_to_file: bool = False, default_value: int = 25, default_HT: str = 'H'):
     """
-    Add value and Heads/Tails to label. Default is 0 value and Heads.
+    Add value and Heads/Tails to label. Default is 25 value and Heads.
 
         N.B. Store H/T in ASCII: H = 72, T = 84.
 
