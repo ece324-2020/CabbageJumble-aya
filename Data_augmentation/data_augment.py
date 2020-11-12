@@ -20,6 +20,7 @@ def load_images_from_folder(folder):
             images.append(img)
     return images
 
+#require a one to one mapping from image names to label names
 def check_dataset_proper(images,labels):
     image_indexes = []
     label_indexes = []
@@ -31,11 +32,42 @@ def check_dataset_proper(images,labels):
         return True
     return False
 
-
+#show a numpy image
 def show_numpy_image(image):
     plt.imshow(image)
     imageplot = plt.imshow(image)
     plt.show()
+
+#check if transformed image is same as original image
+#need dimensions of 2 images to be the same
+def check_same_image_need_same_size(image,transformed_image):
+    equality = torch.eq(image,transformed_image)
+    equality = equality.reshape(-1)
+    equality = equality.tolist()
+    if False in equality:
+        return False
+    return True
+    
+def relabel_coords_horizontal_flip(label_index,image,labels):
+    for j in range(len(labels[labels_image_index_to_list_index[index_of_image]])):
+        labels[label_index][j][0] = int((labels[label_index][j][0]-(image.shape[1]/2)) * (-1) + (image.shape[1]/2))
+
+
+#relabel the coordinates in labels for 180 rotation
+def relabel_coords_180_rotation(label_index,image,labels):
+    for j in range(len(labels[label_index])):
+        x,y = labels[label_index][j][0],labels[label_index][j][1]
+        x_mid,y_mid = int(image.shape[1]/2),int(image.shape[2]/2)
+
+        #make origin center of image
+        x,y = x-x_mid,y-y_mid
+        #perform 180 rotation == reflection in x and y axis
+        x,y = -x,-y
+        #shift back origin
+        x,y = x+x_mid, y+y_mid
+        
+        #reassign x,y
+        labels[label_index][j][0], labels[label_index][j][1]= x,y
 
 
 #get folder path through command line
@@ -79,7 +111,17 @@ original_labels = labels[:]
 
 
 horizontal_flip_transforms = transforms.Compose([
-    transforms.RandomHorizontalFlip(p=1)
+    #transforms.RandomHorizontalFlip(p=1)
+    #transforms.RandomPerspective(distortion_scale=0.5, p=1, interpolation=2, fill=0)
+    #transforms.RandomResizedCrop((600,600), scale=(0.08, 1.0), ratio=(0.75, 1.3333333333333333), interpolation=2)  #transforms.Resize(size, interpolation=2)
+    transforms.RandomAffine((180,180), translate=None, scale=None, shear=None, resample=0, fillcolor=0)
+    #transforms.ColorJitter(brightness=0, contrast=0, saturation=0, hue=0)
+    #transforms.functional.adjust_brightness(img: torch.Tensor, brightness_factor: float)
+    #transforms.functional.adjust_contrast(img: torch.Tensor, contrast_factor: float)
+    #transforms.functional.adjust_gamma(img: torch.Tensor, gamma: float, gain: float = 1)
+    #transforms.functional.adjust_saturation(img: torch.Tensor, saturation_factor: float)
+    #transforms.functional.rotate(img: torch.Tensor, angle: float, resample: int = 0, expand: bool = False, center: Optional[List[int]] = None, fill: Optional[int] = None) 
+
 ])
 
 import copy
@@ -97,22 +139,30 @@ for idx,i in enumerate(all_images):
     image = image.permute(2,0,1)
     transformed_image = horizontal_flip_transforms(image)
 
-    #adjust label if flipped
-    equality = torch.eq(image,transformed_image)
-    equality = equality.reshape(-1)
-    equality = equality.tolist()
-    if False in equality:
-        for j in range(len(labels[labels_image_index_to_list_index[index_of_image]])):
-            labels[labels_image_index_to_list_index[index_of_image]][j][0] = int((labels[labels_image_index_to_list_index[index_of_image]][j][0]-(image.shape[1]/2)) * (-1) + (image.shape[1]/2))
+    #adjust label accordingly if transform was applied
+    label_index = labels_image_index_to_list_index[index_of_image]
+    same_image = check_same_image_need_same_size(image,transformed_image)
+    
+    #adjust for horizontal flip
+    '''
+    if not same_image:
+        relabel_coords_horizontal_flip(label_index,image,labels)
+    '''
+    #adjust for rotation
+    label_index = labels_image_index_to_list_index[index_of_image]
+    relabel_coords_180_rotation(label_index,image,labels)
+    
 
     #permute back
     transformed_image = transformed_image.permute(1,2,0)
     transformed_image = transformed_image.numpy()
-    show_numpy_image(transformed_image)
+    #show_numpy_image(transformed_image)
+    #cv2.imshow(f'Hello',transformed_image)
+    #could write some function to display the image and see if it's okay, if good then we can write it
+    #cv2.imshow(f'Image {i}', img)  # All circled
+    #key = cv2.waitKey(0)
     
-    
-    
-    
+    #transformed_image[0,:,:],transformed_image[1,:,:],transformed_image[2,:,:] = transformed_image[2,:,:],transformed_image[0,:,:],transformed_image[1,:,:]
     cv2.imwrite(f'{args.save_images_folder_path}/{index_of_image}.jpg', transformed_image)
     with open(f'{args.save_labels_folder_path}/{index_of_image}.txt', 'w') as f:
         for j in range(len(labels[labels_image_index_to_list_index[index_of_image]])):
