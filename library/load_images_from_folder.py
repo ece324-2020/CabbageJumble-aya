@@ -1,3 +1,10 @@
+"""
+# Load Images from Folder
+
+Given a folder path, load all the images in that folder.
+"""
+
+
 import cv2
 import os
 

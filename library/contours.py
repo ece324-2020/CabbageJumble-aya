@@ -1,7 +1,7 @@
 """
 # Contour Functions
 
-Functions dealing with contours, duh.
+Functions dealing with contours for the segmentation algorithm.
 """
 
 
