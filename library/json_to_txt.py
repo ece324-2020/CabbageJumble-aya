@@ -52,8 +52,8 @@ def json_to_points(json_path, scale: float = 3000/500):
     return labels
 
 
-labels = json_to_points(json_path='data.json', scale=416/500)
-img = cv2.imread('IMG_6600.jpg')
+labels = json_to_points(json_path='scrap_data/data.json', scale=416 / 500)
+img = cv2.imread('scrap_data/IMG_6600.jpg')
 for label in labels:
     x, y, val = label
     x, y = int(x), int(y)

@@ -1,7 +1,7 @@
 import cv2
 import numpy as np
 from library.ResizeWithAspectRatio import ResizeWithAspectRatio
-from library.store_circle import load_circle_coord
+from library.txt_label_encoder import load_circle_coord
 
 def save_circle_coord(order):
     """

@@ -1,3 +1,8 @@
+"""
+# Store information about the circle in txt
+
+"""
+
 import numpy as np
 
 
@@ -46,7 +51,6 @@ def load_circle_coord(file_path, order_size: bool = False):
         e.g.
         99      99      20      100     72
     :param order_size: bool - whether to order from smallest to largest.
-    :param H_or_T: bool - whether Heads or Tails is present
     :return: np.array 2D -
         e.g. [[x, y, r], [x, y, r], ...]
     """

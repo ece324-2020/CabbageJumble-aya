@@ -1,6 +1,6 @@
 import cv2
 from library.ResizeWithAspectRatio import ResizeWithAspectRatio
-from library.store_circle import load_circle_coord
+from library.txt_label_encoder import load_circle_coord
 
 
 for i in range(410, 471):
