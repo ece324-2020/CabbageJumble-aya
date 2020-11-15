@@ -3,7 +3,7 @@ import os
 
 def resize_txt(path1, org_width = 3000, rszd_width  = 2048):
 	''' This function takes in a path to a folder with the txt files and returns a text file with the resized values 
-	     adjust the original width/height and resized width/height (width= height anyways) in the function definition above'''
+	     adjust the original width/height and resized width/height (width= height anyways) accordingly'''
 	count = 1
 	files = os.listdir(path1)
 	files1 = [f for f in files if f.endswith('.txt')]
