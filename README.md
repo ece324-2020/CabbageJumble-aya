@@ -3,13 +3,12 @@
 ## Introduction
 Comedically inspired by the thought of paying with a wheelbarrow of coins, Cabbage Jumble-aya’s goal is to count the value of coins in a pile, given only an image. 
 
-## Work Plan and Deadlines
-###2020 Nov 9:
-David
-- Finish segmentation baseline
+## Major Roadblocks!
+-[ ] 
+-[ ] Labelling areas 
 
-James
-- Label
-
-Yviel
-- Baseline CNN
+## Work Plan, Deadlines, and Work Flow
+|Date|Yviel|David|James|
+|---|---|---|---|
+|2020 Nov 9|Baseline CNN, GUI to label|Finish segmentation baseline, break code into libraries|Label areas that are part of coins|
+|2020 Nov 16|Being cool|Convert JSON to txt, clean up coding library|Labelling values/Heads/Tails|
