@@ -103,4 +103,4 @@ cv2.waitKey(0)
 cv2.destroyAllWindows()
 
 # Save image
-cv2.imwrite('test_images/Coins Galore.jpg', img)
+cv2.imwrite('test_images/coins_contours.jpg', img)

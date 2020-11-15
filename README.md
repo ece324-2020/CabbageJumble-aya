@@ -3,9 +3,15 @@
 ## Introduction
 Comedically inspired by the thought of paying with a wheelbarrow of coins, Cabbage Jumble-aya’s goal is to count the value of coins in a pile, given only an image. 
 
+## Functionality and Limitations
+Cabbage Jumble-aya counts coins given a picture
+
+### 
+
 ## Major Roadblocks!
+-[ ] Baseline segmenter breaks for touching coins/ coins partially outside view
+-[ ] Labelling areas and training data
 -[ ] 
--[ ] Labelling areas 
 
 ## Work Plan, Deadlines, and Work Flow
 |Date|Yviel|David|James|
