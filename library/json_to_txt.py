@@ -8,7 +8,7 @@ import json
 import cv2
 
 
-def find_scale(input_dim: int = 3024, output_dim: int = 2048):
+def find_scale(input_dim: int = 2048, output_dim: int = 3024):
     """
     Create multiplicative scaling to reduce the size of labels.
 
@@ -20,7 +20,7 @@ def find_scale(input_dim: int = 3024, output_dim: int = 2048):
     return scale
 
 
-def json_to_points(json_path, scale: float = None, input_dim: int = 3024, output_dim: int = 2048):
+def json_to_points(json_path, scale: float = None, input_dim: int = 2048, output_dim: int = 3024):
     """
     Convert JSON to python object of points.
 
