@@ -1,5 +1,6 @@
 # Classifier GUI
 - Run ```python3 main.py```
+- If you make a mistake in labelling, you can easily fix it through the GUI.
 
 ## Controls 
 - Press  `k`to move through the coins
