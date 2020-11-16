@@ -1,4 +1,4 @@
-Classifier GUI
+# Classifier GUI
 
 ## Controls
 - Press  `k`to move through the coins
