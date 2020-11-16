@@ -1,14 +1,14 @@
 # Classifier GUI
 - Run ```python3 main.py```
 
-## Controls
+## Controls (
 - Press  `k`to move through the coins
 - `>` Next picture
 - `<` Previous picture
                                                                                                                                                                                                                                                                
                                                                                                                                                                      
                                                                                                                                                                      
-### Label 1                                                                                                                                                          
+### Label 1                                                                                                                                                         
 - `0` : $0.01 writes "0" in txt file
 - `1` : $0.05 writes "1" in txt file
 - `2` : $0.10 writes "2" in txt file
