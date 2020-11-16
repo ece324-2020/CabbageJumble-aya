@@ -20,7 +20,7 @@ def find_scale(input_dim: int = 3024, output_dim: int = 2048):
     return scale
 
 
-def json_to_points(json_path, scale: float = 2048/3024):
+def json_to_points(json_path, scale: float = None, input_dim: int = 3024, output_dim: int = 2048):
     """
     Convert JSON to python object of points.
 
@@ -34,6 +34,13 @@ def json_to_points(json_path, scale: float = 2048/3024):
         - where x, y are the coordinates and label is the monetary value
         - HT is currently set to zero, since it is unlabelled
     """
+
+    # Check if 'scale' is none
+    if scale is None:
+        if isinstance(input_dim, int) and isinstance(output_dim, int):
+            scale = find_scale(input_dim, output_dim)
+        else:
+            scale = 1
 
     # Open file
     with open(json_path, 'r') as f:
