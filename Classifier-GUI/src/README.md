@@ -2,16 +2,21 @@ Classifier GUI
 
 ## Controls
 - Press  `k`to move through the coins
+                                                                                                                                                                                                                                                               
+                                                                                                                                                                     
+                                                                                                                                                                     
+### Label 1                                                                                                                                                          
 - `0` : $0.01 writes "0" in txt file
 - `1` : $0.05 writes "1" in txt file
 - `2` : $0.10 writes "2" in txt file
 - `3` : $0.25 writes "3" in txt file
 - `4` : $1.00 writes "4" in txt file
 - `5` : $2.00 writes "5" in txt file
-
+                                                                                                                                                         
 - `h` : "H"  writes "74" in txt file
 - `t` : "T"  writes "84" in txt file
-
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       
+### Label 2
 
 - `>` Next picture
 - `<` Previous picture
