@@ -1,4 +1,5 @@
 # Classifier GUI
+- Run ```python3 main.py```
 
 ## Controls
 - Press  `k`to move through the coins
