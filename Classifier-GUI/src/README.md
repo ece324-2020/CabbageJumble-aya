@@ -1,7 +1,7 @@
 # Classifier GUI
 - Run ```python3 main.py```
 
-## Controls (
+## Controls 
 - Press  `k`to move through the coins
 - `>` Next picture
 - `<` Previous picture
@@ -31,3 +31,6 @@
 ## Configure
 - Configure stuff in  ``config.py`` as usual
 - this time it does not save any images, just txt files
+
+## Reference 
+<img src = "https://github.com/ece324-2020/CabbageJumble-aya/blob/main/Classifier-GUI/src/Screen%20Shot%202020-11-16%20at%205.22.36%20PM.png" height = 500 width = 500>
