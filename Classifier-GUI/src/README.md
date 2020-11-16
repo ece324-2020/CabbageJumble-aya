@@ -26,7 +26,7 @@
 - Press `Spacebar`
 - Make sure to save before moving on to the next picture
 - Adjust the count (right now it is at 0, and see the title before saving, make sure the image matches the title name to be saved to)
-- The txt files will have "-1" as placeholders (this means it is unlabelled)
+- The txt files may have "-1" as placeholders (this means it is unlabelled)
 
 ## Configure
 - Configure stuff in  ``config.py`` as usual
