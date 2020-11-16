@@ -8,7 +8,19 @@ import json
 import cv2
 
 
-def json_to_points(json_path, scale: float = 3000/500):
+def find_scale(input_dim: int = 3024, output_dim: int = 2048):
+    """
+    Create multiplicative scaling to reduce the size of labels.
+
+    :param input_dim:
+    :param output_dim:
+    :return:
+    """
+    scale = output_dim / input_dim
+    return scale
+
+
+def json_to_points(json_path, scale: float = 2048/3024):
     """
     Convert JSON to python object of points.
 
@@ -18,13 +30,17 @@ def json_to_points(json_path, scale: float = 3000/500):
     :param json_path:
     :param scale:
     :return:
+        - {'image_name.jpg': {(x, y): (label, HT), (x, y): (label, HT)}, 'image_name.jpg': [], ...}
+        - where x, y are the coordinates and label is the monetary value
+        - HT is currently set to zero, since it is unlabelled
     """
+
     # Open file
     with open(json_path, 'r') as f:
         obj = json.load(f)
 
     # Create object to hold centre coordinates and
-    all_labels = []
+    all_labels = {}
 
     for i, file in enumerate(obj):
         # Get image and annotations
@@ -36,28 +52,29 @@ def json_to_points(json_path, scale: float = 3000/500):
 
         for j, coin in enumerate(annotations):
             # Parse label into cent value
-            value = coin['label']
-            value = value[1:].replace('-', '.')
-            value = int(value) * 100
+            label = coin['label']
+            label = label[1:].replace('-', '.')
+            label = int(float(label) * 100)
 
             # Add unscaled x, y
             coordinates = coin['coordinates']
-            x = coordinates['x']
-            y = coordinates['y']
+            x = round(coordinates['x'] * scale)
+            y = round(coordinates['y'] * scale)
 
-            labels.append((round(x), round(y), value))
+            labels[(x, y)] = [round(label), 0]
 
-        break
+        all_labels[image] = labels
 
-    return labels
+    return all_labels
 
-
-labels = json_to_points(json_path='scrap_data/data.json', scale=416 / 500)
-img = cv2.imread('scrap_data/IMG_6600.jpg')
-for label in labels:
-    x, y, val = label
-    x, y = int(x), int(y)
-    cv2.rectangle(img, pt1=(x-10, y-10), pt2=(x+10, y+10), color=(0, 255, 255), thickness=-1)
-    cv2.imshow('Image', img)
-    cv2.waitKey(0)
-    cv2.destroyAllWindows()
+if __name__ == '__main__':
+    all_labels = json_to_points(json_path='scrap_data/data2.json', scale=416 / 500)
+    img = cv2.imread('scrap_data/IMG_6600.jpg')
+    labels = next(iter(all_labels.values()))
+    for label in labels:
+        x, y, val = label
+        x, y = int(x), int(y)
+        cv2.rectangle(img, pt1=(x-10, y-10), pt2=(x+10, y+10), color=(0, 255, 255), thickness=-1)
+        cv2.imshow('Image', img)
+        cv2.waitKey(0)
+        cv2.destroyAllWindows()
