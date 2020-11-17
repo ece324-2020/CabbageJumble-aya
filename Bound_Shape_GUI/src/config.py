@@ -1,13 +1,13 @@
 # Parameters
 
-''' You need a path to the images "path_to_imgs" (after the OpenCV segmentation), 
+''' You need a path to the first-ten-images "path_to_imgs" (after the OpenCV segmentation),
 
     a path to the txt files "path_to_label" ( also after the segmentation),
    		 If there are no txt files, you can point it to an empty folder.
-                 also if some of the images are missing txt files, thats fine,
+                 also if some of the first-ten-images are missing txt files, thats fine,
                  the gui will just generate it for you if you draw circles.
 
-    "path_to_save" are screenshots of the images with bounded circles (they are useless for us)
+    "path_to_save" are screenshots of the first-ten-images with bounded circles (they are useless for us)
                  you can just point it to an empty folder and delete afterwards
 
 
@@ -18,7 +18,7 @@
                          as the image it corresponds to (disregarding the extension)
 
    you can delete the bounded circles in three ways: one you can press "d", two you can delete manually in txt file
-   and three, you can press clear or "c". Note that the circles will be automatically drawn if there are txt files that correspond to the images
+   and three, you can press clear or "c". Note that the circles will be automatically drawn if there are txt files that correspond to the first-ten-images
    (and you can modify these circles at any time by adding to it or removing it)
 
 
@@ -31,12 +31,12 @@ Note that in order to save the circles, you have to press spacebar or enter to s
 
 ''' I really recommend making path_to_label and path_to_save_label the same path so that way
     you would know whether an image has been labelled or not (e.g. you can be going in circles without knowing it)
-    (It's just more convenient). Then you can just manually move the labelled images and modified txt files 
+    (It's just more convenient). Then you can just manually move the labelled first-ten-images and modified txt files 
     onto the good folder, also the txt files will have the same name as the image it corresponds to '''
 
 misc = dict(
 
-    # path to your folder of images and txt files respectively (if they are in the same folder, put the same path):
+    # path to your folder of first-ten-images and txt files respectively (if they are in the same folder, put the same path):
     # If you don't have any txt files yet, just point it to an empty folder
     path_to_imgs = "meh_images" ,
     path_to_label ="meh_images_labels",

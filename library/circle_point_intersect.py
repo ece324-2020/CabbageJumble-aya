@@ -23,7 +23,7 @@ def match_points_to_circles(circles: np.ndarray, values: tuple):
         values = next(iter(values.items()))
     img_name, points = values
 
-    # Initialize new storage
+    # Initialize good storage
     if circles.shape[1] == 3:
         new_circles = np.pad(circles, ((0, 0), (0, 2)))
     elif circles.shape[1] == 5:

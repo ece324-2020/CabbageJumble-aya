@@ -1,7 +1,7 @@
 """
 # Load Images from Folder
 
-Given a folder path, load all the images in that folder.
+Given a folder path, load all the first-ten-images in that folder.
 """
 
 
@@ -11,7 +11,7 @@ import os
 
 def load_images_from_folder(folder):
     """
-    Load images from folder
+    Load first-ten-images from folder
     :param folder:
     :return:
     """
