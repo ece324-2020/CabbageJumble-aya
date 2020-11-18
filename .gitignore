@@ -1,4 +1,9 @@
-data/
+# What to NOT put on git
+
+## PyCharm stuff
 .idea/
-data_labelling/
-david-process-json/
+
+## Data
+data/
+data/Final_images
+data/Final_images-20201118T145505Z-001.zip
