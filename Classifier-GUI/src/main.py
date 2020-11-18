@@ -95,7 +95,7 @@ def main():
         pygame.draw.circle(screen, clr1, (todraw[i]), int(rad[i]),bor_size)
     draw_buttons(screen,8)
     text_render(screen, screen, label1, label2, todraw)
-    pygame.display.update()
+   # pygame.display.update()
     pos = None
     myfont = pygame.font.SysFont("fontname", 50)
     while True:
@@ -112,9 +112,11 @@ def main():
          text1 = myfont.render(f"{pictures[index]} saving to {txt[index]} ", 1, (255,255,255))
          surface.blit(text1, (250 ,0))
          pygame.display.update()
-
-
-         text1 = myfont.render("L1", 1, (96, 108, 118))
+        # for i in range(0,len(todraw)):
+         #      pygame.draw.circle(screen, clr3, (todraw[key_index]), int(rad[key_index]),bor_size)
+          #     pygame.draw.circle(screen, clr1, (todraw[i]), int(rad[i]),bor_size)
+         pygame.display.update()
+#         text1 = myfont.render("L1", 1, (96, 108, 118))
          if img_dir != None:
              img_dir = pygame.image.load(f"{dir}/{pictures[index]}")
              img_dir = pygame.transform.scale(img_dir,(S_WIDTH,S_HEIGHT))
