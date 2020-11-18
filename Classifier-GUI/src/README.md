@@ -6,6 +6,7 @@
 - Press  `k`to move through the coins
 - `>` Next picture
 - `<` Previous picture
+- Hold `g` to view the coins without the labels.
                                                                                                                                                                                                                                                                
                                                                                                                                                                      
                                                                                                                                                                      
