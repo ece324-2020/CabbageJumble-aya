@@ -13,6 +13,7 @@ def event(surface, pos, todraw,rad, screen, redo, redorad, index, pictures, prev
     r2 = pygame.Rect((0,S_WIDTH+20),(S_HEIGHT+200, 170))
     r3 = pygame.Rect((0,0),(20, S_WIDTH+200))
     r4 = pygame.Rect((0,0),(S_HEIGHT+20, 20))
+    key_state = pygame.key.get_pressed()
     for event in pygame.event.get():
        if event.type == pygame.QUIT:
            pygame.quit()
@@ -27,6 +28,12 @@ def event(surface, pos, todraw,rad, screen, redo, redorad, index, pictures, prev
                       pygame.draw.circle(surface, clr3, (todraw[key_index]), int(rad[key_index]),bor_size)
                  screen.blit(surface, (0,0))
                  pygame.display.update()
+           elif event.key == pygame.K_g:
+                for i in range(0,len(todraw)):
+                          pygame.draw.circle(surface, clr1, (todraw[i]), int(rad[i]),bor_size)
+                          pygame.draw.circle(surface, clr3, (todraw[key_index]), int(rad[key_index]),bor_size)
+                screen.blit(surface, (0,0))
+                pygame.display.update()
            elif (event.key == pygame.K_RIGHT)or (keys[pygame.K_RIGHT]):
                prevind = index
                save_index = (index+1)%len(pictures)+ count_sub
@@ -139,6 +146,14 @@ def event(surface, pos, todraw,rad, screen, redo, redorad, index, pictures, prev
                screen.blit(surface, (0,0))
                pygame.display.update()
                pygame.display.update()
+       elif event.type == pygame.KEYUP:
+           if (event.key == pygame.K_g):
+               text_render(surface, surface, label1, label2, todraw)
+               for i in range(0,len(todraw)):
+                    pygame.draw.circle(surface, clr3, (todraw[key_index]), int(rad[key_index]),bor_size)
+                    pygame.draw.circle(surface, clr1, (todraw[i]), int(rad[i]),bor_size)
+               screen.blit(surface, (0,0))
+               pygame.display.update() 
     return pos, todraw, rad, redo, redorad, index, prevind, txt, save_index, key_index, label1, label2
 
 
