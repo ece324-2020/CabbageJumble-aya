@@ -38,12 +38,12 @@ misc = dict(
 
     # path to your folder of images and txt files respectively (if they are in the same folder, put the same path):
     # If you don't have any txt files yet, just point it to an empty folder
-    path_to_imgs = "meh_images" ,
-    path_to_label ="meh_images_labels",
+    path_to_imgs = "../../Data_augmentation/Debug_augmented_images" ,
+    path_to_label ="../../Data_augmentation/Debug_augmented_labels",
 
     # path to save labelled image and txt label respectively:
-    path_to_save = "TEST" ,
-    path_to_save_label = "TEST2",
+    path_to_save = "../../Data_augmentation/temp_folder_test_GUI_images" ,
+    path_to_save_label = "../../Data_augmentation/temp_folder_test_GUI_labels",
     border_size = 5
 )
 
