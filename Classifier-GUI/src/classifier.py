@@ -23,9 +23,7 @@ def event(surface, pos, todraw,rad, screen, redo, redorad, index, pictures, prev
            keys = pygame.key.get_pressed()     
            if (event.key == pygame.K_k): # or (keys[pygame.K_r]):
                  key_index = (key_index+1)%len(todraw)   
-                 text_render(surface, surface,label1, label2, todraw)  
-                 print(rad[key_index])
-                 print(todraw[key_index])          
+                 text_render(surface, surface,label1, label2, todraw)         
                  for i in range(0,len(todraw)):
                       pygame.draw.circle(surface, clr1, (todraw[i]), int(rad[i]),bor_size)
                       pygame.draw.circle(surface, clr3, (todraw[key_index]), int(rad[key_index]),bor_size)
