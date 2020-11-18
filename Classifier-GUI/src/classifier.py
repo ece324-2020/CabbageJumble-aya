@@ -56,7 +56,7 @@ def event(surface, pos, todraw,rad, screen, redo, redorad, index, pictures, prev
                if len(pictures)>0:
                    org_image = plt.imread(f"{dir}/{pictures[index]}")
             #plt.imsave(f"{dir_save}/{save_index}.jpeg", org_image)
-                   with open(f"{txtsave}/{save_index}.txt", 'w') as f:
+                   with open(f"{txtsave}/{txt[index]}", 'w') as f:
                        for i in range(len(todraw)):
                            f.write(f"{int((todraw[i][0]-19)*width/S_WIDTH)}\t{int((todraw[i][1]-19)*height/S_HEIGHT)}\t{int(0.5+rad[i]*width/S_WIDTH)}\t{label1[i]}\t{label2[i]}\n")
                save_index = (index+1)%len(pictures) + count_sub
@@ -183,6 +183,7 @@ def folder_img(dir, txt):
    for t in txt2:
        if t[:-3] in test_jpg or t[:-3] in test_jpeg:
            txt3.append(t)
+   txt3 = sorted(txt3)
    print(f" The images you have in the directory are {pic}")
    print(f" The txt files you have in the directory are {txt3}")
    return pic, txt3

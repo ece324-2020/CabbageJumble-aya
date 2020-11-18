@@ -60,11 +60,11 @@ def main():
                try:
                    label1.append(as_list[3])
                except:
-                   label1.append(-1)
+                   label1.append(0)
                try:
                    label2.append(as_list[4])
                except:
-                   label2.append(-1)
+                   label2.append(0)
        except:
             t = 0
     
@@ -82,7 +82,7 @@ def main():
     pygame.draw.rect(surface, clr2, r2)
     pygame.draw.rect(surface, clr2, r3)
     pygame.draw.rect(surface, clr2, r4)
-    text1 = myfont.render(f"{pictures[index]} saving on {count}.txt ", 1, (255,255,255))
+    text1 = myfont.render(f"{pictures[index]} saving to {txt[index]} ", 1, (255,255,255))
     surface.blit(text1, (250 ,0))
     screen.blit(surface, (0,0))
     if img_dir != None:
@@ -109,7 +109,7 @@ def main():
          pygame.draw.rect(surface, (255,0,0), r5)
          #screen.blit(surface, (0,0))
          myfont = pygame.font.SysFont("fontname", 20)
-         text1 = myfont.render(f"{pictures[index]} saving with title {count} ", 1, (255,255,255))
+         text1 = myfont.render(f"{pictures[index]} saving to {txt[index]} ", 1, (255,255,255))
          surface.blit(text1, (250 ,0))
          pygame.display.update()
 
@@ -158,11 +158,11 @@ def main():
                           try:
                                  label1.append(as_list[3])
                           except:
-                                 label1.append(-1)
+                                 label1.append(0)
                           try:
                                  label2.append(as_list[4])
                           except:
-                                 label2.append(-1)
+                                 label2.append(0)
                     except:
                        t = 0
                  draw_buttons(surface,100)
