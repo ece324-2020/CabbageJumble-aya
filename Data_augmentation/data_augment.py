@@ -45,7 +45,7 @@ def show_numpy_image(image):
     plt.show()
 
 #check if transformed image is same as original image
-#need dimensions of 2 images to be the same
+#need dimensions of 2 first-ten-images to be the same
 def check_same_image_need_same_size(image,transformed_image):
     equality = torch.eq(image,transformed_image)
     equality = equality.reshape(-1)
@@ -78,7 +78,7 @@ def get_transforms(onehundred_80,rot_90_CW, rot_90_CCW, bright,contrast, saturat
     return list_of_transforms
 
 
-#can't actual use this because mirror images don't exist in real life, but just in case I left it here
+#can't actual use this because mirror first-ten-images don't exist in real life, but just in case I left it here
 def relabel_coords_horizontal_flip(label_index,image,labels):
     for j in range(len(labels[labels_image_index_to_list_index[index_of_image]])):
         labels[label_index][j][0] = int((labels[label_index][j][0]-(image.shape[1]/2)) * (-1) + (image.shape[1]/2))

@@ -82,7 +82,7 @@ args = parser.parse_args()
 
 all_images = sorted(os.listdir(args.images_folder_path))
 
-#load all the actual images
+#load all the actual first-ten-images
 all_loaded_images = []
 all_loaded_images_index = [] 
 for idx,i in enumerate(all_images):
@@ -93,9 +93,9 @@ for idx,i in enumerate(all_images):
     index = i.split(".")[0]
     all_loaded_images_index.append(index)
 
-print("done loading images")
+print("done loading first-ten-images")
 
-#images to be matched with all_images
+#first-ten-images to be matched with all_images
 fix_images = sorted(os.listdir(args.fix_images_folder_path))
 
 #we need to alter json as we go

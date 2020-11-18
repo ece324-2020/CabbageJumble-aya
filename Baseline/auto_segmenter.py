@@ -128,9 +128,9 @@ def load_images_from_folder(folder):
             images.append(img)
     return images
 
-# Get list of images
-images = load_images_from_folder('David_images/David - images/raw')
-#print(images)
+# Get list of first-ten-images
+images = load_images_from_folder('David_images/David - first-ten-images/raw')
+#print(first-ten-images)
 
 count = 295
 count1 = 108

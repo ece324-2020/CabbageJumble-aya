@@ -27,7 +27,7 @@ def json_to_points(json_path, scale: float = None, input_dim: int = 2048, output
     Requirements:
         - For each "image", the file path must be correct
         - Need
-    :param json_path:
+    :param json_path: str or obj - object or path to json-encoded object to be acted upon.
     :param scale:
     :return:
         - {'image_name.jpg': {(x, y): (label, HT), (x, y): (label, HT)}, 'image_name.jpg': [], ...}
@@ -43,8 +43,11 @@ def json_to_points(json_path, scale: float = None, input_dim: int = 2048, output
             scale = 1
 
     # Open file
-    with open(json_path, 'r') as f:
-        obj = json.load(f)
+    if isinstance(json_path, str):
+        with open(json_path, 'r') as f:
+            obj = json.load(f)
+    elif isinstance(json_path, object):
+        obj = json_path
 
     # Create object to hold centre coordinates and
     all_labels = {}
