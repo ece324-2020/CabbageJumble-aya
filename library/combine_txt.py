@@ -4,7 +4,7 @@ import numpy as np
 
 start = 1
 end = 576
-labels_path = 'david_saved_labels/'
+labels_path = '../data/david_saved_labels/'
 
 label_yolo = {
     '1H': 0,
@@ -49,3 +49,6 @@ def create_master_string():
     full_string = '\n'.join(container)
 
     return full_string
+
+if __name__ == '__main__':
+    master_string = create_master_string()
