@@ -117,7 +117,7 @@ def write_text(img, shape, label, coin_count, font_shift, font_size, clr, read_l
 def main_classifier():
     # img_count = get_count(save_path, start=93)
 
-    img_count = 456
+    img_count = 479
     while True:
         # Error Conditions
         if img_count < 0:
