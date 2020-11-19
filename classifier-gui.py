@@ -66,7 +66,7 @@ def command(key, img_count, coin_count):
 
     }
 
-    # Get (value, HT, img_count, coin_count)
+    # Get (value, HT, i, coin_count)
     k = input_label.get(key, lambda img_count, coin_count: (None, None, img_count, coin_count))(img_count, coin_count)
 
     return k
@@ -115,8 +115,9 @@ def write_text(img, shape, label, coin_count, font_shift, font_size, clr, read_l
 
 
 def main_classifier():
-    img_count = get_count(save_path, start=441)
+    # img_count = get_count(save_path, start=93)
 
+    img_count = 456
     while True:
         # Error Conditions
         if img_count < 0:
@@ -168,6 +169,12 @@ def main_classifier():
             # Wait for User Input
             k = cv2.waitKey(0)
             cv2.destroyAllWindows()
+            if k == ord('q'):
+                np.savetxt(f'{save_path}{img_count}.txt', labels, fmt='%i', delimiter='\t')
+                return None
+            elif k == ord('Q'):
+                return None
+
             value, HT, new_img_count, new_coin_count = command(k, img_count, coin_count)
 
             # Check if $ Value change
@@ -215,8 +222,8 @@ img_count = 1
 
 # File paths must end in '/'
 img_path = 'data/Final_images/'
-label_path = 'data/five_labels/'
-save_path = 'data/five_labels/'
+label_path = 'data/david_saved_labels/'
+save_path = 'data/david_saved_labels/'
 
 
 read_label = {
