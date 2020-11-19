@@ -18,7 +18,7 @@ def main():
     screen = pygame.display.set_mode(size = (S_WIDTH+150,S_HEIGHT+50), flags = 0)
     surface = screen.convert()
 
-    count = 1
+    count = 251
     count_sub = count
     match = None
     todraw = []
