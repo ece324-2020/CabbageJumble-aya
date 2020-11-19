@@ -1,11 +1,21 @@
+"""
+# Combine text files in i.jpg into the YOLO format
+
+Assumptions:
+    - Coin value is an integer in cents, e.g. 100 = loonie
+    - All files are <integer>.txt
+    - All pictures are <integer>.jpg
+"""
+
 import os
 import numpy as np
 
 
-start = 1
-end = 576
-labels_path = '../data/david_saved_labels/'
+start = 1   # Start Number
+end = 576   # End Number
+labels_path = '../data/david_saved_labels/'     # Path to Labels
 
+# String labels to integer label
 label_yolo = {
     '1H': 0,
     '1T': 1,
@@ -22,10 +32,16 @@ label_yolo = {
 }
 
 def create_master_string():
+    """
+    Combines all text files into a single text file in the YOLO format.
+
+    :return:
+    """
     # Container for strings
     container = [''] * (end + 1 - start)
 
     for i in range(start, end + 1):
+        # Check if the file path exists, if so grab it
         label_path = f'{labels_path}{i}.txt'
         if not os.path.isfile(label_path):
             continue
