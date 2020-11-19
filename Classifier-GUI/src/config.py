@@ -38,11 +38,11 @@ misc = dict(
 
     # path to your folder of first-ten-images and txt files respectively (if they are in the same folder, put the same path):
     # If you don't have any txt files yet, just point it to an empty folder
-    path_to_imgs = "/Users/yvielcastillejos/Saved", #"/Users/yvielcastillejos/Desktop/To be labelled 1-first-ten-images" ,
-    path_to_label = "/Users/yvielcastillejos/Saved", #"/Users/yvielcastillejos/Desktop/To be labelled 1-labels 2",
+    path_to_imgs = '../../data/Final_images/',
+    path_to_label = '../../data/final_labels',
 
     # path to save labelled image and txt label respectively:
-    path_to_save_label = "/Users/yvielcastillejos/Saved",
+    path_to_save_label = "../../data/five_labels",
     border_size = 3
 	
 )
@@ -63,6 +63,14 @@ keys = {
         7: " ",
         8: " ",
         9: " ",
+    # -1: '?',
+    # 0: '?',
+    # 1: '$0.01',
+    # 5: '$0.05',
+    # 10: '$0.10',
+    # 25: '$0.25',
+    # 100: '$1.00',
+    # 200: '$2.00',
 
 	# FOR LABEL 2, PRESS "h" OR "t"
         # Stores the ASCII number in the txt file

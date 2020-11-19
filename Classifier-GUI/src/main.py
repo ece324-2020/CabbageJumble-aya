@@ -6,7 +6,7 @@ from math import sqrt
 import matplotlib.pyplot as plt
 from scipy import ndimage
 import os
-from buttons import*
+from buttons import *
 from classifier import event, folder_img
 import re
 
@@ -94,6 +94,7 @@ def main():
         pygame.draw.circle(screen, clr3, (todraw[0]), int(rad[0]),bor_size)
         pygame.draw.circle(screen, clr1, (todraw[i]), int(rad[i]),bor_size)
     draw_buttons(screen,8)
+    print(label1, label2)
     text_render(screen, screen, label1, label2, todraw)
     pygame.display.update()
     pos = None
@@ -164,7 +165,8 @@ def main():
                           except:
                                  label2.append(-1)
                     except:
-                       t = 0
+                        print('EXCEPT in MAIN.PY')
+                        t = 0
                  draw_buttons(surface,100)
                  text_render(surface, screen, label1, label2, todraw)
                  for i in range(0,len(todraw)):

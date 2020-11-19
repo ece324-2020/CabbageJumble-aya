@@ -1,0 +1,29 @@
+# Issues
+
+Hey Yviel, I tried labelling the images, but I ran into a pile of bugs. I couldn't fix any because it is really hard to
+debug without comments/ explanation/ global variables floating around.
+
+I'm not sure how many of these bugs are me being dumb tbh.
+
+## General
+- Please comment code! I have no idea what is going on so I can't debug!
+- Please don't use global variables. Again, they're hard to trace
+
+## Display
+- Not a biggie, but I was wondering if you could put the label not right in the centre of the coin, cuz it makes it a
+little hard to read. I am not sure where this is in the code, so I can't fix it...
+
+## config.py
+- The 'key' variable is not compatible with reading numbers as '200' or '100' from the file; if you change this, it
+stops being compatible with keyboard commands ('0', '1', '2' etc)
+- Not an issue, but I like how the variables are in 1 place! I'm just a little confused about how to use them
+
+## main.py
+- Might be on my end, but the instructions for 'Next', 'Backward' etc. aren't displaying.
+- I am not sure how you increment the 'count' variable. For me, it is jumping from 1.txt to 10.txt
+
+
+I really like the look of the GUI though! When you showed us, it looked very streamlined and efficient!
+
+
+-- David
