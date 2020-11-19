@@ -13,6 +13,8 @@ def event(surface, pos, todraw,rad, screen, redo, redorad, index, pictures, prev
     r2 = pygame.Rect((0,S_WIDTH+20),(S_HEIGHT+200, 170))
     r3 = pygame.Rect((0,0),(20, S_WIDTH+200))
     r4 = pygame.Rect((0,0),(S_HEIGHT+20, 20))
+    key_state = pygame.key.get_pressed()
+    #print(key_index)
     for event in pygame.event.get():
        if event.type == pygame.QUIT:
            pygame.quit()
@@ -21,12 +23,18 @@ def event(surface, pos, todraw,rad, screen, redo, redorad, index, pictures, prev
            keys = pygame.key.get_pressed()     
            if (event.key == pygame.K_k): # or (keys[pygame.K_r]):
                  key_index = (key_index+1)%len(todraw)   
-                 text_render(surface, surface,label1, label2, todraw)            
+                 text_render(surface, surface,label1, label2, todraw)         
                  for i in range(0,len(todraw)):
                       pygame.draw.circle(surface, clr1, (todraw[i]), int(rad[i]),bor_size)
                       pygame.draw.circle(surface, clr3, (todraw[key_index]), int(rad[key_index]),bor_size)
                  screen.blit(surface, (0,0))
                  pygame.display.update()
+           elif event.key == pygame.K_g:
+                for i in range(0,len(todraw)):
+                          pygame.draw.circle(surface, clr1, (todraw[i]), int(rad[i]),bor_size)
+                          pygame.draw.circle(surface, clr3, (todraw[key_index]), int(rad[key_index]),bor_size)
+                screen.blit(surface, (0,0))
+                pygame.display.update()
            elif (event.key == pygame.K_RIGHT)or (keys[pygame.K_RIGHT]):
                prevind = index
                save_index = (index+1)%len(pictures)+ count_sub
@@ -38,10 +46,6 @@ def event(surface, pos, todraw,rad, screen, redo, redorad, index, pictures, prev
                index = (index-1)%len(pictures)
                text_render(surface, surface,label1, label2, todraw)
            elif (event.key == pygame.K_SPACE):
-         #      for i in range(0,len(todraw)):
-         #            pygame.draw.circle(surface, clr3, (todraw[key_index]), int(rad[key_index]),bor_size)
-         #            pygame.draw.circle(surface, clr1, (todraw[i]), int(rad[i]),bor_size)
-         #            screen.blit(surface, (0,0))
                img = pygame.surfarray.pixels3d(screen)
                img = img[20:S_WIDTH+20,20:S_HEIGHT+20,:]
                img = ndimage.rotate(img,90)
@@ -49,7 +53,7 @@ def event(surface, pos, todraw,rad, screen, redo, redorad, index, pictures, prev
                if len(pictures)>0:
                    org_image = plt.imread(f"{dir}/{pictures[index]}")
             #plt.imsave(f"{dir_save}/{save_index}.jpeg", org_image)
-                   with open(f"{txtsave}/{save_index}.txt", 'w') as f:
+                   with open(f"{txtsave}/{txt[index]}", 'w') as f:
                        for i in range(len(todraw)):
                            f.write(f"{int((todraw[i][0]-19)*width/S_WIDTH)}\t{int((todraw[i][1]-19)*height/S_HEIGHT)}\t{int(0.5+rad[i]*width/S_WIDTH)}\t{label1[i]}\t{label2[i]}\n")
                save_index = (index+1)%len(pictures) + count_sub
@@ -70,75 +74,84 @@ def event(surface, pos, todraw,rad, screen, redo, redorad, index, pictures, prev
                 label1[key_index] = 0
                 text_render(surface, surface,label1, label2, todraw)
                 for i in range(0,len(todraw)):
-                        pygame.draw.circle(surface, clr3, (todraw[key_index]), int(rad[key_index]),bor_size)
-                        pygame.draw.circle(surface, clr1, (todraw[i]), int(rad[i]),bor_size)
+                       pygame.draw.circle(surface, clr1, (todraw[i]), int(rad[i]),bor_size) 
+                       pygame.draw.circle(surface, clr3, (todraw[key_index]), int(rad[key_index]),bor_size)
                 screen.blit(surface, (0,0))
                 pygame.display.update()
            elif (event.key == pygame.K_1):
               label1[key_index] = 1
               text_render(surface, surface,label1, label2, todraw)
               for i in range(0,len(todraw)):
-                      pygame.draw.circle(surface, clr3, (todraw[key_index]), int(rad[key_index]),bor_size)
-                      pygame.draw.circle(surface, clr1, (todraw[i]), int(rad[i]),bor_size)
+                       pygame.draw.circle(surface, clr1, (todraw[i]), int(rad[i]),bor_size)
+                       pygame.draw.circle(surface, clr3, (todraw[key_index]), int(rad[key_index]),bor_size)
               screen.blit(surface, (0,0))
               pygame.display.update()
            elif (event.key == pygame.K_2):
-               label1[key_index] = 2
-               text_render(surface, surface,label1, label2, todraw)
-               for i in range(0,len(todraw)):
-                       pygame.draw.circle(surface, clr3, (todraw[key_index]), int(rad[key_index]),bor_size)
-                       pygame.draw.circle(surface, clr1, (todraw[i]), int(rad[i]),bor_size)
-               screen.blit(surface, (0,0))
-               pygame.display.update()
-           elif (event.key == pygame.K_3):
-               label1[key_index] = 3
-               text_render(surface, surface,label1, label2, todraw)
-               for i in range(0,len(todraw)):
-                       pygame.draw.circle(surface, clr3, (todraw[key_index]), int(rad[key_index]),bor_size)
-                       pygame.draw.circle(surface, clr1, (todraw[i]), int(rad[i]),bor_size)
-               screen.blit(surface, (0,0))
-               pygame.display.update()
-           elif (event.key == pygame.K_4):
-               label1[key_index] = 4
-               text_render(surface, surface,label1, label2, todraw)
-               for i in range(0,len(todraw)):
-                       pygame.draw.circle(surface, clr3, (todraw[key_index]), int(rad[key_index]),bor_size)
-                       pygame.draw.circle(surface, clr1, (todraw[i]), int(rad[i]),bor_size)
-               screen.blit(surface, (0,0))
-               pygame.display.update()
-           elif (event.key == pygame.K_5):
                label1[key_index] = 5
                text_render(surface, surface,label1, label2, todraw)
                for i in range(0,len(todraw)):
-                       pygame.draw.circle(surface, clr3, (todraw[key_index]), int(rad[key_index]),bor_size)
+                     pygame.draw.circle(surface, clr1, (todraw[i]), int(rad[i]),bor_size) 
+                     pygame.draw.circle(surface, clr3, (todraw[key_index]), int(rad[key_index]),bor_size)
+               screen.blit(surface, (0,0))
+               pygame.display.update()
+           elif (event.key == pygame.K_3):
+               label1[key_index] = 10
+               text_render(surface, surface,label1, label2, todraw)
+               for i in range(0,len(todraw)):
                        pygame.draw.circle(surface, clr1, (todraw[i]), int(rad[i]),bor_size)
+                       pygame.draw.circle(surface, clr3, (todraw[key_index]), int(rad[key_index]),bor_size)
+               screen.blit(surface, (0,0))
+               pygame.display.update()
+           elif (event.key == pygame.K_4):
+               label1[key_index] = 25
+               text_render(surface, surface,label1, label2, todraw)
+               for i in range(0,len(todraw)):
+                       pygame.draw.circle(surface, clr1, (todraw[i]), int(rad[i]),bor_size)
+
+                       pygame.draw.circle(surface, clr3, (todraw[key_index]), int(rad[key_index]),bor_size)
+               screen.blit(surface, (0,0))
+               pygame.display.update()
+           elif (event.key == pygame.K_5):
+               label1[key_index] = 100
+               text_render(surface, surface,label1, label2, todraw)
+               for i in range(0,len(todraw)):
+                       pygame.draw.circle(surface, clr1, (todraw[i]), int(rad[i]),bor_size)
+                       pygame.draw.circle(surface, clr3, (todraw[key_index]), int(rad[key_index]),bor_size)
                screen.blit(surface, (0,0))
                pygame.display.update()
            elif (event.key == pygame.K_6):
-               label1[key_index] = 6
+               label1[key_index] = 200
                text_render(surface, surface,label1, label2, todraw)
                for i in range(0,len(todraw)):
-                       pygame.draw.circle(surface, clr3, (todraw[key_index]), int(rad[key_index]),bor_size)
                        pygame.draw.circle(surface, clr1, (todraw[i]), int(rad[i]),bor_size)
+                       pygame.draw.circle(surface, clr3, (todraw[key_index]), int(rad[key_index]),bor_size)
                screen.blit(surface, (0,0))
                pygame.display.update()
            elif (event.key == pygame.K_h):
                label2[key_index] = 72
                text_render(surface, surface,label1, label2, todraw)
                for i in range(0,len(todraw)):
-                       pygame.draw.circle(surface, clr3, (todraw[key_index]), int(rad[key_index]),bor_size)
                        pygame.draw.circle(surface, clr1, (todraw[i]), int(rad[i]),bor_size)
+                       pygame.draw.circle(surface, clr3, (todraw[key_index]), int(rad[key_index]),bor_size)
                screen.blit(surface, (0,0))
                pygame.display.update()
            elif (event.key == pygame.K_t):
                label2[key_index] = 84
                text_render(surface, surface, label1, label2, todraw)
                for i in range(0,len(todraw)):
-                       pygame.draw.circle(surface, clr3, (todraw[key_index]), int(rad[key_index]),bor_size)
                        pygame.draw.circle(surface, clr1, (todraw[i]), int(rad[i]),bor_size)
+                       pygame.draw.circle(surface, clr3, (todraw[key_index]), int(rad[key_index]),bor_size)
                screen.blit(surface, (0,0))
                pygame.display.update()
                pygame.display.update()
+       elif event.type == pygame.KEYUP:
+           if (event.key == pygame.K_g):
+               text_render(surface, surface, label1, label2, todraw)
+               for i in range(0,len(todraw)):
+                    pygame.draw.circle(surface, clr1, (todraw[i]), int(rad[i]),bor_size)
+                    pygame.draw.circle(surface, clr3, (todraw[key_index]), int(rad[key_index]),bor_size)
+               screen.blit(surface, (0,0))
+               pygame.display.update() 
     return pos, todraw, rad, redo, redorad, index, prevind, txt, save_index, key_index, label1, label2
 
 
@@ -168,6 +181,7 @@ def folder_img(dir, txt):
    for t in txt2:
        if t[:-3] in test_jpg or t[:-3] in test_jpeg:
            txt3.append(t)
+   #tixt3 = sorted(txt3)
    print(f" The images you have in the directory are {pic}")
    print(f" The txt files you have in the directory are {txt3}")
    return pic, txt3

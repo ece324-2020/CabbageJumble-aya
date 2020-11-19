@@ -6,7 +6,7 @@ from math import sqrt
 import matplotlib.pyplot as plt
 from scipy import ndimage
 import os
-from buttons import*
+from buttons import *
 from classifier import event, folder_img
 import re
 
@@ -60,11 +60,11 @@ def main():
                try:
                    label1.append(as_list[3])
                except:
-                   label1.append(-1)
+                   label1.append(0)
                try:
                    label2.append(as_list[4])
                except:
-                   label2.append(-1)
+                   label2.append(0)
        except:
             t = 0
     
@@ -82,7 +82,7 @@ def main():
     pygame.draw.rect(surface, clr2, r2)
     pygame.draw.rect(surface, clr2, r3)
     pygame.draw.rect(surface, clr2, r4)
-    text1 = myfont.render(f"{pictures[index]} saving on {count}.txt ", 1, (255,255,255))
+    text1 = myfont.render(f"{pictures[index]} saving to {txt[index]} ", 1, (255,255,255))
     surface.blit(text1, (250 ,0))
     screen.blit(surface, (0,0))
     if img_dir != None:
@@ -94,8 +94,9 @@ def main():
         pygame.draw.circle(screen, clr3, (todraw[0]), int(rad[0]),bor_size)
         pygame.draw.circle(screen, clr1, (todraw[i]), int(rad[i]),bor_size)
     draw_buttons(screen,8)
+    print(label1, label2)
     text_render(screen, screen, label1, label2, todraw)
-    pygame.display.update()
+   # pygame.display.update()
     pos = None
     myfont = pygame.font.SysFont("fontname", 50)
     while True:
@@ -109,12 +110,14 @@ def main():
          pygame.draw.rect(surface, (255,0,0), r5)
          #screen.blit(surface, (0,0))
          myfont = pygame.font.SysFont("fontname", 20)
-         text1 = myfont.render(f"{pictures[index]} saving with title {count} ", 1, (255,255,255))
+         text1 = myfont.render(f"{pictures[index]} saving to {txt[index]} ", 1, (255,255,255))
          surface.blit(text1, (250 ,0))
          pygame.display.update()
-
-
-         text1 = myfont.render("L1", 1, (96, 108, 118))
+        # for i in range(0,len(todraw)):
+         #      pygame.draw.circle(screen, clr3, (todraw[key_index]), int(rad[key_index]),bor_size)
+          #     pygame.draw.circle(screen, clr1, (todraw[i]), int(rad[i]),bor_size)
+         pygame.display.update()
+#         text1 = myfont.render("L1", 1, (96, 108, 118))
          if img_dir != None:
              img_dir = pygame.image.load(f"{dir}/{pictures[index]}")
              img_dir = pygame.transform.scale(img_dir,(S_WIDTH,S_HEIGHT))
@@ -158,13 +161,14 @@ def main():
                           try:
                                  label1.append(as_list[3])
                           except:
-                                 label1.append(-1)
+                                 label1.append(0)
                           try:
                                  label2.append(as_list[4])
                           except:
-                                 label2.append(-1)
+                                 label2.append(0)
                     except:
-                       t = 0
+                        print('EXCEPT in MAIN.PY')
+                        t = 0
                  draw_buttons(surface,100)
                  text_render(surface, screen, label1, label2, todraw)
                  for i in range(0,len(todraw)):
