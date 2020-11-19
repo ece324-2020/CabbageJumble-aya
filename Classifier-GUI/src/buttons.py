@@ -47,7 +47,7 @@ def text_render(surface, screen, label1, label2, todraw):
         for i in range(len(todraw)):
                myfont = pygame.font.SysFont("fontname", 15)
                text1 = myfont.render(f"{config.keys[label1[i]]}, {config.keys[label2[i]]}", 1, (57,255,20))
-               surface.blit(text1, (todraw[i][0]-17, todraw[i][1]-8))
+               surface.blit(text1, (todraw[i][0]-20, todraw[i][1]-10))
         pygame.display.update()       
         return
 
