@@ -117,7 +117,8 @@ def write_text(img, shape, label, coin_count, font_shift, font_size, clr, read_l
 def main_classifier():
     # img_count = get_count(save_path, start=93)
 
-    img_count = 479
+    img_count = 547
+
     while True:
         # Error Conditions
         if img_count < 0:
@@ -221,9 +222,9 @@ Also, yes, I should use the argparse library here. But dude, I'm cooler than tha
 img_count = 1
 
 # File paths must end in '/'
-img_path = 'data/Final_images/'
-label_path = 'data/david_saved_labels/'
-save_path = 'data/david_saved_labels/'
+img_path = '../data/Final_images/'
+label_path = '../data/Labels - v1/'
+save_path = '../data/Labels - v1/'
 
 
 read_label = {
