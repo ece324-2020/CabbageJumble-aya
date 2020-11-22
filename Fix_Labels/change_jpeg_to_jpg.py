@@ -1,3 +1,11 @@
+#example to run: py change_jpeg_to_jpg.py 
+
+'''
+Change the folder path and the save folder path.
+Folder path is folder with images that are possibily jpeg or jpg.
+Save folder path saves the same images but with the .jpg extension.
+'''
+
 import os
 import copy
 import matplotlib.pyplot as plt

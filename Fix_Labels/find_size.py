@@ -1,3 +1,12 @@
+#example to run: py find_size.py
+
+'''
+Change folder_path accordingly
+
+This py file is useful to quickly check/print out the shapes of all the images in a folder.
+
+'''
+
 import os
 import copy
 import matplotlib.pyplot as plt
