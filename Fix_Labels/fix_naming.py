@@ -1,3 +1,10 @@
+#example to run: py fix_naming.py --images_folder_path ../../train --fix_images_folder_path ../../trian_fixed_naming
+
+'''
+Yviel's photos were named: 1_jpg.rf.c2b8b5353d87b9d2040bcb353e456fd6 with roboflow, so this py file converts this name to 1.jpg
+'''
+
+
 import os
 import argparse
 import torch
@@ -19,10 +26,6 @@ parser = argparse.ArgumentParser()
 parser.add_argument('--images_folder_path', type=str, required = True)
 parser.add_argument('--fixed_images_folder_path', type=str, required = True)
 
-
-
-#../../Fix_data/Fixed dataset.v2-fixed.createml/valid
-#example to run: py fix_indexes.py --images_folder_path ../../train --fix_images_folder_path ../../Proper_size_images
 args = parser.parse_args()
 
 all_images = sorted(os.listdir(args.images_folder_path))

@@ -1,8 +1,19 @@
 #example to run code: py data_augment.py --images_folder_path Debug_images --labels_folder_path Debug_labels --save_images_folder_path Debug_augmented_images --save_labels_folder_path Debug_augmented_labels
-# check argparse section to control which data agumentations you want to do
+#run for myself:
+#py data_augment.py --images_folder_path ../../Images_to_train_proper_labelling --labels_folder_path ../../Labels_to_train_proper_labelling --save_images_folder_path ../../Augmented_images_90 --save_labels_folder_path ../../Augmented_labels_90 --rot_90_CW 1
+#py data_augment.py --images_folder_path ../../Images_to_train_proper_labelling --labels_folder_path ../../Labels_to_train_proper_labelling --save_images_folder_path ../../Augmented_images_180 --save_labels_folder_path ../../Augmented_labels_180 --rot_180 1
+#py data_augment.py --images_folder_path ../../Images_to_train_proper_labelling --labels_folder_path ../../Labels_to_train_proper_labelling --save_images_folder_path ../../Augmented_images_270 --save_labels_folder_path ../../Augmented_labels_270 --rot_90_CCW 1
+'''
+This code is currently being used to rotate all the images by 90, 180, and 270 degrees and store them with their labels too.
+check argparse section to control which data agumentations you want to do
 
-#to check debug in the GUI go to GUI folder and run:
+Notation: image-number_0 is original image 
+        #clockwise directions
+        image-number_1 is 90 degrees rotated
+        image-number_2 is 180 degrees rotated
+        image-number_3 is 270 degrees rotated 
 
+'''
 
 import os
 import argparse
@@ -132,6 +143,17 @@ def relabel_coords_90_CCW_rotation(label_index,image,labels):
         labels[label_index][j][0], labels[label_index][j][1]= x,y
 
 
+#convention in doc string at top
+def get_save_extension(rot_180,rot_90_CW,rot_90_CCW):
+    if rot_90_CW == 1:
+        return 1
+    elif rot_180 == 1:
+        return 2 
+    else:
+        #we guarantee there is a rotation
+        return 3
+
+
 #get folder path through command line
 parser = argparse.ArgumentParser()
 parser.add_argument('--images_folder_path', type=str, required = True)
@@ -143,16 +165,15 @@ parser.add_argument('--save_labels_folder_path', type=str, required = True)
 parser.add_argument('--rot_180', type=int, required = False, default = 0)
 parser.add_argument('--rot_90_CW', type=int, required = False, default = 0)
 parser.add_argument('--rot_90_CCW', type=int, required = False, default = 0)
-parser.add_argument('--bright_L', type=int, required = False, default = 0)
-parser.add_argument('--bright_U', type=int, required = False, default = 0)
-parser.add_argument('--contrast_L', type=int, required = False, default = 0)
-parser.add_argument('--contrast_U', type=int, required = False, default = 0)
-parser.add_argument('--saturation_L', type=int, required = False, default = 0)
-parser.add_argument('--saturation_U', type=int, required = False, default = 0)
+parser.add_argument('--bright_L', type=float, required = False, default = 0)
+parser.add_argument('--bright_U', type=float, required = False, default = 0)
+parser.add_argument('--contrast_L', type=float, required = False, default = 0)
+parser.add_argument('--contrast_U', type=float, required = False, default = 0)
+parser.add_argument('--saturation_L', type=float, required = False, default = 0)
+parser.add_argument('--saturation_U', type=float, required = False, default = 0)
 
 parser.add_argument('--show_input', type=int, required = False, default = 0)
 parser.add_argument('--show_output', type=int, required = False, default = 0)
-parser.add_argument('--initial_save_index', type=int, required = False, default = 0)
 
 
 args = parser.parse_args()
@@ -168,11 +189,12 @@ if check_dataset_proper(all_images,all_labels) == False:
 labels = []
 labels_image_index_to_list_index = {}
 
-
+#place labels in a list so we can alter them
+# labels[i] will give another list with each element being a line for the txt file
 for idx,i in enumerate(all_labels):
-    label_index = int(i.split(".")[0])
+    label_index = int(i.split("_")[0])
     labels_image_index_to_list_index[label_index] = idx
-    with open(f"{args.labels_folder_path}/{label_index}.txt", "r") as f:
+    with open(f"{args.labels_folder_path}/{label_index}_0.txt", "r") as f:
         file_with_labels = f.read()
         lines = file_with_labels.split("\n")
         subset_labels = []
@@ -188,19 +210,20 @@ for idx,i in enumerate(all_labels):
 
 original_labels = labels[:]
 
-
-
+#check for improper input
 if args.rot_180 + args.rot_90_CW + args.rot_90_CCW > 1:
     print("Only one rotation allowed!")
+    exit()
+if args.rot_180 + args.rot_90_CW + args.rot_90_CCW == 0:
+    print("Must have a rotation")
     exit()
 
 list_of_transforms = get_transforms(onehundred_80 = args.rot_180, rot_90_CW = args.rot_90_CW, rot_90_CCW = args.rot_90_CCW, bright = (args.bright_L,args.bright_U), contrast = (args.contrast_L,args.contrast_U),saturation = (args.saturation_L,args.saturation_U) )
 
-save_index = args.initial_save_index
 
 for idx,i in enumerate(all_images):
     #getting index of image
-    index_of_image = int(i.split(".")[0])
+    index_of_image = int(i.split("_")[0])
     #create deep copy because we're reading it (not allowed to change)
     image = copy.deepcopy(plt.imread(f"{args.images_folder_path}/{i}"))
     #convert to tensor
@@ -238,8 +261,16 @@ for idx,i in enumerate(all_images):
     #change RGB  -->  BGR for proper colour saving
     transformed_image = transformed_image[:,:,::-1]
     
-    cv2.imwrite(f'{args.save_images_folder_path}/{save_index}.jpg', transformed_image)
-    with open(f'{args.save_labels_folder_path}/{save_index}.txt', 'w') as f:
+
+    save_extension = get_save_extension(args.rot_180,args.rot_90_CW,args.rot_90_CCW)
+
+
+    cv2.imwrite(f'{args.save_images_folder_path}/{index_of_image}_{save_extension}.jpg', transformed_image)
+    with open(f'{args.save_labels_folder_path}/{index_of_image}_{save_extension}.txt', 'w') as f:
         for j in range(len(labels[labels_image_index_to_list_index[index_of_image]])):
-	        f.write(f'{labels[labels_image_index_to_list_index[index_of_image]][j][0]}\t{labels[labels_image_index_to_list_index[index_of_image]][j][1]}\t{labels[labels_image_index_to_list_index[index_of_image]][j][2]}\n')
-    save_index +=1
+            for k in range(5):
+                f.write(f"{labels[labels_image_index_to_list_index[index_of_image]][j][k]}\t")
+            f.write("\n")
+	            
+#f.write(f'{labels[labels_image_index_to_list_index[index_of_image]][j][0]}\t{labels[labels_image_index_to_list_index[index_of_image]][j][1]}\t{labels[labels_image_index_to_list_index[index_of_image]][j][2]}\n')
+    
