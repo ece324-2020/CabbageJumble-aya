@@ -2,14 +2,18 @@
 # Confusion Matrix
 
 Creates a confusion matrix and displays it in three formats.
+
+- Assumptions:
+    - There is at least 1 of each coin type
 """
 
 import numpy as np
 import matplotlib.pyplot as plt
+from matplotlib import cm
 from sklearn.metrics import confusion_matrix
 
 
-def confusion(array, plot: bool = False, plot3d: bool = False, text: bool = False):
+def confusion(labels, prediction, plot: bool = False, plot3d: bool = False, text: bool = False):
     """
     Create the confusion matrix for an array.
 
@@ -17,7 +21,6 @@ def confusion(array, plot: bool = False, plot3d: bool = False, text: bool = Fals
     :return: ndarray, 2D - confusion matrix
     """
     # Create confusion matrix
-    labels, prediction = array[:, 0], array[:, 1]
     r = confusion_matrix(labels, prediction)
 
     # Get names and numbers
@@ -54,16 +57,22 @@ def confusion(array, plot: bool = False, plot3d: bool = False, text: bool = Fals
         plt.colorbar(i)
 
     if plot3d:
-        # Plot confusion shape - https://matplotlib.org/mpl_toolkits/mplot3d/tutorial.html
+        # Plot confusion shape - https://matplotlib.org/3.1.0/gallery/mplot3d/surface3d.html
         fig = plt.figure()
-        ax = fig.add_subplot(111, projection='3d')
+        ax = fig.gca(projection='3d')
 
         # Set X-Y-Z labels
         ax.set_xlabel('Prediction')
         ax.set_ylabel('Ground Truth')
         ax.set_zlabel('Confusion')
 
-        ax.plot_surface(numbers, numbers, r, cmap='binary')
+        # Plot
+        X, Y = np.meshgrid(numbers, numbers)
+        surf = ax.plot_surface(X, Y, r, cmap=cm.coolwarm, linewidth=0, antialiased=False)
+
+        ax.set_zlim(0, 1.01)
+        fig.colorbar(surf, shrink=0.5, aspect=5)
+        plt.show()
 
     if text:
         # Print title
@@ -83,7 +92,9 @@ def confusion(array, plot: bool = False, plot3d: bool = False, text: bool = Fals
 
 if __name__ == '__main__':
     array = np.array(
-        [[0, 0], [1, 1], [1, 2], [2, 2], [2, 2], [3, 3], [4, 4], [5, 5], [6, 6], [7, 7], [8, 8], [9, 9], [10, 10], [11,
+        [[0, 0], [1, 1], [5, 1], [5, 1], [1, 2], [2, 2], [2, 2], [3, 3], [4, 4], [5, 5], [6, 6], [7, 7], [8, 8], [9,
+                                                                                                                 9], [10,
+                                                                                                                10], [11,
                                                                                                                 11]])
 
-    r = confusion(array, text=True)
+    r = confusion(array, plot=False, plot3d=True, text=False)
