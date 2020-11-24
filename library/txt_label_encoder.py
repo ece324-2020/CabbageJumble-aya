@@ -5,6 +5,49 @@
 
 import numpy as np
 
+def load_labels(file_path, order_size: bool = False):
+    """
+    Load the coordinates of a text file with circle labels.
+
+    :param file_path: str - path to text file. Relative to the file you are currently in.
+        e.g. 'data/labels/104.txt'
+
+        The text file should be formatted:
+        {x}\t{y}\t{r}(\t{value})(\t{H_or_T})
+        where the last two values are optional.
+        e.g.
+        99      99      20      100     72
+    :param order_size: bool - whether to order from smallest to largest.
+    :return: np.array 2D -
+        e.g. [[x, y, r], [x, y, r], ...]
+    """
+
+    # Get each (x, y, r, value, H/T) as np.ndarray
+    labels = np.loadtxt(file_path, dtype=int, delimiter='\t', ndmin=2)
+
+    # OPTIONAL: Sort in order of increasing size
+    if order_size:
+        index = np.argsort(labels[:, 2], axis=0)[::-1]
+        labels = labels[index]
+
+    return labels
+
+
+def save_labels(file_path, labels, scale: int = 1, order_size: bool = False):
+
+    # OPTIONAL: Sort in order of increasing size
+    if order_size:
+        index = np.argsort(labels[:, 2], axis=0)[::-1]
+        labels = labels[index]
+
+    # OPTIONAL: Scale coordinates
+    if scale != 1:
+        temp = labels[:, :3] * scale
+        labels[:, :3] = np.round(temp).astype(int)
+
+    # Save to file_path
+    np.savetxt(file_path, labels, fmt='%i', delimiter='\t')
+
 
 def save_circle_coord(path, labels, scale: int = 1):
     """
@@ -40,6 +83,8 @@ def save_circle_coord(path, labels, scale: int = 1):
 
 def load_circle_coord(file_path, order_size: bool = False):
     """
+    DO NOT USE!!! LEGACY FUNCTION!
+
     Load the coordinates of a text file with circle labels.
 
     :param file_path: str - path to text file. Relative to the file you are currently in.

@@ -17,7 +17,7 @@ def confusion(labels, prediction, plot: bool = False, plot3d: bool = False, text
     """
     Create the confusion matrix for an array.
 
-    :param array: ndarray, 1D - [[label, prediction], [label, prediction], ...]
+    :param array: ndarray, 3D - [[[label, prediction], [label, prediction], ...]]
     :return: ndarray, 2D - confusion matrix
     """
     # Create confusion matrix

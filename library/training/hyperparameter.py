@@ -76,6 +76,8 @@ def write_results(results, xlsx_path, worksheet: str = 'Results'):
 if __name__ == '__main__':
     xlsx_path = '../$ scrap_data/test.xlsx'
     df = read_hyperparameters(xlsx_path)
+
+
     results = {'Trial': 1, 'Train Acc': 0.883, 'Train Loss': 0.546, 'Valid Acc': 0.797, 'Valid Loss': 0.721,
     'Test Acc': 0.657, 'Test Loss': 1.043}
     write_results(results, xlsx_path)
