@@ -14,7 +14,7 @@ import numpy as np
 
 start = 1   # Start Number
 end = 576   # End Number
-labels_path = '../data/Labels - v1'  # Path to Labels
+labels_path = '../../data/Labels - v1'  # Path to Labels
 
 # String labels to integer label
 label_yolo = {
@@ -113,5 +113,5 @@ def create_master_string():
 
 if __name__ == '__main__':
     master_string = create_master_string_os()
-    with open('../data/YOLO_augmented_label.txt', 'w') as f:
+    with open('../../data/YOLO_augmented_label.txt', 'w') as f:
         f.write(master_string)

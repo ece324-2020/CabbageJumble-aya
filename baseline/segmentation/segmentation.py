@@ -8,8 +8,7 @@ Testing segmentation.
 import numpy as np
 import cv2
 from library.ResizeWithAspectRatio import ResizeWithAspectRatio
-from library.contours import argmax_contour_area, children_area, arg_large_areas
-import matplotlib.pyplot as plt
+from library.baseline.segmentation.contours import argmax_contour_area, children_area, arg_large_areas
 
 # Open image
 img_original = cv2.imread('test_images/coins.jpg')

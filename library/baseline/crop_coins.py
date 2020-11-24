@@ -155,8 +155,8 @@ if __name__ == '__main__':
     """
 
     # Edit these labels
-    img_path = '../data/Final_images/'
-    label_path = '../data/Labels - v1/'
+    img_path = '../../data/Final_images/'
+    label_path = '../../data/Labels - v1/'
     save_crop = '../data/seg_image/'
     save_label = '../data/seg_label/'
 

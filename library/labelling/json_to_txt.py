@@ -78,8 +78,8 @@ def json_to_points(json_path, scale: float = None, input_dim: int = 2048, output
     return all_labels
 
 if __name__ == '__main__':
-    all_labels = json_to_points(json_path='$ scrap_data/data2.json', scale=416 / 500)
-    img = cv2.imread('$ scrap_data/IMG_6600.jpg')
+    all_labels = json_to_points(json_path='../$ scrap_data/data2.json', scale=416 / 500)
+    img = cv2.imread('../$ scrap_data/IMG_6600.jpg')
     labels = next(iter(all_labels.values()))
     for label in labels:
         x, y, val = label

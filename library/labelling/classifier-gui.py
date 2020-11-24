@@ -222,9 +222,9 @@ Also, yes, I should use the argparse library here. But dude, I'm cooler than tha
 img_count = 1
 
 # File paths must end in '/'
-img_path = '../data/Final_images/'
-label_path = '../data/Labels - v1/'
-save_path = '../data/Labels - v1/'
+img_path = '../../data/Final_images/'
+label_path = '../../data/Labels - v1/'
+save_path = '../../data/Labels - v1/'
 
 
 read_label = {

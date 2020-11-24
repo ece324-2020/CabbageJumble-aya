@@ -1,4 +1,3 @@
-import numpy as np
 import json
 import cv2
 
@@ -71,7 +70,7 @@ good = discard_garbage(train, valid, test)
 
 # ============================== Convert Simple List ============================== #
 
-from library.json_to_txt import json_to_points
+from library.labelling.json_to_txt import json_to_points
 
 
 all_labels = json_to_points(good)
@@ -100,7 +99,7 @@ def test_annotate_images(all_labels, break_index = '11.jpg'):
 
 
 # ============================== Convert Numpy Array ============================== #
-from library.circle_point_intersect import match_points_to_circles
+from library.labelling.circle_point_intersect import match_points_to_circles
 from library.txt_label_encoder import load_circle_coord, save_circle_coord
 
 new_circles = {}

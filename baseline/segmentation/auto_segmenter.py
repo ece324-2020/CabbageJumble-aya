@@ -2,7 +2,7 @@ import numpy as np
 import cv2
 from library.ResizeWithAspectRatio import ResizeWithAspectRatio
 from library.load_images_from_folder import load_images_from_folder
-from library.contours import argmax_contour_area, children_area, arg_large_areas
+from library.baseline.segmentation.contours import argmax_contour_area, children_area, arg_large_areas
 
 
 images = load_images_from_folder('../../data/david/raw')
