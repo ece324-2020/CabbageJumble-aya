@@ -1,5 +1,5 @@
 """
-Test File
+File for Segmentation component of Cabbage Jumbleaya
 
 Testing segmentation.
 """
@@ -11,7 +11,7 @@ from library.ResizeWithAspectRatio import ResizeWithAspectRatio
 from library.baseline.segmentation.contours import argmax_contour_area, children_area, arg_large_areas
 
 # Open image
-img_original = cv2.imread('test_images/coins.jpg')
+img_original = cv2.imread('../../../baseline/segmentation/test_images/coins.jpg')
 
 # Resize so it fits on screen
 img = ResizeWithAspectRatio(img_original, width=600)
@@ -73,7 +73,7 @@ for child in large_children:
 
     crop.append((x,y,x+w,y+h))
 
-with open('results/labels.txt', 'w') as f:
+with open('../../../baseline/segmentation/results/labels.txt', 'w') as f:
     f.write(labels)
 
 
@@ -102,4 +102,4 @@ cv2.waitKey(0)
 cv2.destroyAllWindows()
 
 # Save image
-cv2.imwrite('test_images/coins_contours.jpg', img)
+cv2.imwrite('../../../baseline/segmentation/test_images/coins_contours.jpg', img)
