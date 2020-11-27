@@ -7,21 +7,25 @@ import argparse
 import numpy as np
 import matplotlib.pyplot as plt
 import time
-from torchsummary import summary
+from models.model import *
 
 #example to run the code
-#py Sec3_main.py --data_location training/my_training/ --seed 0 --lr 0.01 --epochs 100 --batch_size 10
+#py train_baseline.py --data_location DATA --num_classes 4
 
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
 #getting required arguements
 parser = argparse.ArgumentParser()
-parser.add_argument('--images_path',required = True)
-parser.add_argument('--labels_path',required = True)
+parser.add_argument('--data_location',required = True)
 parser.add_argument('--seed', type=int, default = 1)
-parser.add_argument('--lr', type=float, default = 0.01)
-parser.add_argument('--epochs', type=int, default=100)
-parser.add_argument('--batch_size', type=int, default = 4)
+parser.add_argument('--lr', type=float, default = 0.1)
+parser.add_argument('--epochs', type=int, default=10)
+parser.add_argument('--batch_size', type=int, default = 20)
+parser.add_argument('--num_classes', type=int, default = 12)
+parser.add_argument('--save_name', type=str, default = "model.pt")
+
+
+
 
 args = parser.parse_args()
 
@@ -55,9 +59,10 @@ data = torchvision.datasets.ImageFolder(args.data_location, transform = transfor
 dataloader = torch.utils.data.DataLoader(data, batch_size=args.batch_size,shuffle=True)
 
 
+print("Done Loading Data")
 
 #getting model, loss function, and optimizer
-model = coin_classifier()
+model = coin_classifier(args.num_classes)
 model.to(device)
 
 
@@ -71,6 +76,7 @@ start_time = time.time()
 
 #maing training loop
 for epoch in range(args.epochs):
+    print(f"Epoch num: {epoch}")
     running_loss = 0
     num_batches = 0
     #iterating through mini-batches
@@ -79,15 +85,14 @@ for epoch in range(args.epochs):
         #potential error
         in_data = i[0].to(device)
         truth = i[1].to(device)
-
-        #manually onehot encoding truth (the labels)
-        new_labels = torch.zeros((len(in_data),10))
-        for idx2,j in enumerate(truth):
-            new_labels[idx2,j]=1
-        
+        gt_labels = torch.zeros(truth.shape[0],args.num_classes).to(device)
+        for idx2, j in enumerate(truth):
+            gt_labels[idx2][j] = 1
+    
         predict =  model(in_data.float())
-        loss = loss_fnc(input=predict, target=new_labels.float())
-        running_loss += loss
+        predict.to(device)
+        loss = loss_fnc(input=predict, target=gt_labels.float())
+        running_loss += float(loss)
         num_batches += 1
         loss.backward()
         optimizer.step()    
@@ -97,18 +102,28 @@ for epoch in range(args.epochs):
     
     #getting the accuracy per an epoch
     for idx,i in enumerate(dataloader):
-        in_data = i[0]
-        truth = i[1]
-        #manually onehot encoding the labels
-        new_labels = torch.zeros((len(in_data),10))
-        for idx2,j in enumerate(truth):
-            new_labels[idx2,j]=1
+        in_data = i[0].to(device)
+        truth = i[1].to(device)
+        gt_labels = torch.zeros(truth.shape[0],args.num_classes)
+        for idx2, j in enumerate(truth):
+            gt_labels[idx2][j] = 1
+        gt_labels.to(device)
         predict =  model(in_data.float())
-        predict = torch.max(predict,1)
+        predict.to(device)
+        
+        arg_predict = torch.argmax(predict,1)
+        '''
+        print()
+        print(predict)
+        print(arg_predict)
+        print(gt_labels)
+        print(truth)
+        print()
+        '''
 
         #getting the number of correct predictions
         for k in range(truth.size()[0]):
-            if truth[k] == predict[1][k]:
+            if truth[k] == arg_predict[k]:
                 num_correct+=1
     
     train_acc.append(num_correct/len(data))
@@ -133,10 +148,15 @@ plt.show()
 #plotting the loss per epoch
 plt.plot(x, train_loss, label = "train_loss")
 plt.xlabel('Epoch number')
-plt.ylabel("Accuracy (in percentage)")
+plt.ylabel("Loss")
 plt.title(f"Training Loss: alpha = {args.lr}, epoch_num = {args.epochs}, batch_size = {args.batch_size}")
 plt.legend(loc='upper right')
 plt.show()
 
+
+print(f"Accuracy is: {train_acc[-1]}")
+
 #displaying model statistics
-summary(model, input_size=(3, 56, 56))
+#summary(model, input_size=(3, 56, 56))
+
+torch.save(model,args.save_name)
