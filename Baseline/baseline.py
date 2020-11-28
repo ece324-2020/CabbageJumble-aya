@@ -31,3 +31,4 @@ def baseline(img_path, label_path):
 
 if __name__ == '__main__':
     img_path, label_path = ''
+    baseline(img_path, label_path)
