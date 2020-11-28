@@ -79,7 +79,7 @@ def event(surface, pos, todraw,rad, screen, redo, redorad, index, pictures, prev
                 screen.blit(surface, (0,0))
                 pygame.display.update()
            elif (event.key == pygame.K_1):
-              label1[key_index] = 1
+              label1[key_index] = 0
               text_render(surface, surface,label1, label2, todraw)
               for i in range(0,len(todraw)):
                        pygame.draw.circle(surface, clr1, (todraw[i]), int(rad[i]),bor_size)
@@ -87,7 +87,7 @@ def event(surface, pos, todraw,rad, screen, redo, redorad, index, pictures, prev
               screen.blit(surface, (0,0))
               pygame.display.update()
            elif (event.key == pygame.K_2):
-               label1[key_index] = 5
+               label1[key_index] = 1
                text_render(surface, surface,label1, label2, todraw)
                for i in range(0,len(todraw)):
                      pygame.draw.circle(surface, clr1, (todraw[i]), int(rad[i]),bor_size) 
@@ -95,7 +95,7 @@ def event(surface, pos, todraw,rad, screen, redo, redorad, index, pictures, prev
                screen.blit(surface, (0,0))
                pygame.display.update()
            elif (event.key == pygame.K_3):
-               label1[key_index] = 10
+               label1[key_index] = 2
                text_render(surface, surface,label1, label2, todraw)
                for i in range(0,len(todraw)):
                        pygame.draw.circle(surface, clr1, (todraw[i]), int(rad[i]),bor_size)
@@ -103,7 +103,7 @@ def event(surface, pos, todraw,rad, screen, redo, redorad, index, pictures, prev
                screen.blit(surface, (0,0))
                pygame.display.update()
            elif (event.key == pygame.K_4):
-               label1[key_index] = 25
+               label1[key_index] = 3
                text_render(surface, surface,label1, label2, todraw)
                for i in range(0,len(todraw)):
                        pygame.draw.circle(surface, clr1, (todraw[i]), int(rad[i]),bor_size)
@@ -112,7 +112,7 @@ def event(surface, pos, todraw,rad, screen, redo, redorad, index, pictures, prev
                screen.blit(surface, (0,0))
                pygame.display.update()
            elif (event.key == pygame.K_5):
-               label1[key_index] = 100
+               label1[key_index] = 4
                text_render(surface, surface,label1, label2, todraw)
                for i in range(0,len(todraw)):
                        pygame.draw.circle(surface, clr1, (todraw[i]), int(rad[i]),bor_size)
@@ -120,7 +120,7 @@ def event(surface, pos, todraw,rad, screen, redo, redorad, index, pictures, prev
                screen.blit(surface, (0,0))
                pygame.display.update()
            elif (event.key == pygame.K_6):
-               label1[key_index] = 200
+               label1[key_index] = 5
                text_render(surface, surface,label1, label2, todraw)
                for i in range(0,len(todraw)):
                        pygame.draw.circle(surface, clr1, (todraw[i]), int(rad[i]),bor_size)

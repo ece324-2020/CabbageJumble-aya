@@ -8,3 +8,9 @@ data/
 data/Final_images
 data/final_labels
 data/Final_images-20201118T145505Z-001.zip
+
+## Data for training classification
+Baseline/Data_Images
+Baseline/Data_Labels
+Baseline/Classification/DATA
+Baseline/Classification/Validation

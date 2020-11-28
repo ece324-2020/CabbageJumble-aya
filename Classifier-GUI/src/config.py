@@ -38,11 +38,11 @@ misc = dict(
 
     # path to your folder of images and txt files respectively (if they are in the same folder, put the same path):
     # If you don't have any txt files yet, just point it to an empty folder
-    path_to_imgs = "/Users/yvielcastillejos/Saved", #"/Users/yvielcastillejos/Desktop/To be labelled 1-images" ,
-    path_to_label = "/Users/yvielcastillejos/Saved", #"/Users/yvielcastillejos/Desktop/To be labelled 1-labels 2",
+    path_to_imgs = "../../../Augmented_images_270", #"/Users/yvielcastillejos/Desktop/To be labelled 1-images" ,
+    path_to_label = "../../../Augmented_labels_270", #"/Users/yvielcastillejos/Desktop/To be labelled 1-labels 2",
 
     # path to save labelled image and txt label respectively:
-    path_to_save_label = "/Users/yvielcastillejos/Saved",
+    path_to_save_label = "../../../FINAL_final_labels",
     border_size = 3
 	
 )
@@ -53,7 +53,7 @@ keys = {
 	# FOR LABEL 1 (CLASS OF COINS)
         # Stores 0,1,2,3,4,5 in txt file
         -1: ' ',
-	0: ' ',
+	#0: ' ',
 	1: "$0.01",
 	5: "$0.05",
 	10: "$0.10",

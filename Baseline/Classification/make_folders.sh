@@ -3,5 +3,5 @@
 
 for i in {0..11}
 do
-   mkdir Validation/$i
+   mkdir DATA/$i
 done
