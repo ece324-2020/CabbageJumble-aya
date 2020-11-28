@@ -24,11 +24,15 @@ all_images = sorted(os.listdir(args.images_path))
 all_labels = sorted(os.listdir(args.labels_path))
 
 for idx, i in enumerate(all_labels):
-    f = open(f"{args.labels_path}/{i}","r")
-    label = f.readline()
-    label = label.strip()
-    name = i.split(".")[0]
-    shutil.move(f"{args.images_path}/{name}.jpg",f"{args.top_save_path}/{label}/{name}.jpg")
+    try:
+        f = open(f"{args.labels_path}/{i}","r")
+        label = f.readline()
+        label = label.strip()
+        name = i.split(".")[0]
+        print(name)
+        shutil.move(f"{args.images_path}/{name}.jpg",f"{args.top_save_path}/{label}/{name}.jpg")
+    except:
+        print(f"name not in {i}")
 
 
 
