@@ -4,8 +4,9 @@ from library.ResizeWithAspectRatio import ResizeWithAspectRatio
 from library.load_images_from_folder import load_images_from_folder
 from library.baseline.segmentation.contours import argmax_contour_area, children_area, arg_large_areas
 
-
-images = load_images_from_folder('../../data/david/raw')
+path = f'../../../data/Final_images/514.jpg'
+images = [cv2.imread(path)]
+# images = load_images_from_folder('../../../data/Final_images')
 
 for i, img_original in enumerate(images):
     # Resize so it fits on screen
@@ -48,13 +49,13 @@ for i, img_original in enumerate(images):
     cv2.destroyAllWindows()
 
     # Save ORIGINAL IMAGE and LABEL
-    if key == ord(' '):
-        cv2.imwrite(f'../../data/david/good_segment/good_img_{i}.jpg', img_original)
-        with open(f'../../data/david/good_segment/good_label_{i}.txt', 'w') as f:
-            f.write(labels)
-    elif key == ord('k'):
-        cv2.imwrite(f'../../data/david/meh_segment/meh_img_{i}.jpg', img_original)
-        with open(f'../../data/david/good_segment/good_label_{i}.txt', 'w') as f:
-            f.write(labels)
-    else:
-        cv2.imwrite(f'../../data/david/bad_segment/bad_img_{i}.jpg', img_original)
+    # if key == ord(' '):
+    #     cv2.imwrite(f'../../data/david/good_segment/good_img_{i}.jpg', img_original)
+    #     with open(f'../../data/david/good_segment/good_label_{i}.txt', 'w') as f:
+    #         f.write(labels)
+    # elif key == ord('k'):
+    #     cv2.imwrite(f'../../data/david/meh_segment/meh_img_{i}.jpg', img_original)
+    #     with open(f'../../data/david/good_segment/good_label_{i}.txt', 'w') as f:
+    #         f.write(labels)
+    # else:
+    #     cv2.imwrite(f'../../data/david/bad_segment/bad_img_{i}.jpg', img_original)
