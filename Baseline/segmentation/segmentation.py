@@ -3,8 +3,9 @@ import cv2
 from library.ResizeWithAspectRatio import ResizeWithAspectRatio
 from library.baseline.segmentation.contours import argmax_contour_area, children_area, arg_large_areas
 
-def segmentation(img_path):
-    img = cv2.imread('../../../baseline/segmentation/test_images/coins.jpg')
+
+def segmentation(img_path, show: bool = False):
+    img = cv2.imread(img_path)
 
     # Create grey image
     im_grey = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
@@ -28,3 +29,30 @@ def segmentation(img_path):
     black = np.zeros(img.shape, dtype=np.uint8)
 
     # Crop out Children
+    crops = []
+    for child in large_children:
+        (x, y), r = cv2.minEnclosingCircle(contours[child])
+        x, y, r = round(x), round(y), round(r)
+
+        # Create white circle mask
+        cv2.circle(black, (x, y), r, (255, 255, 255), -1)
+
+        crop = black[y-r:y+r, x-r:x+r] & img[y-r:y+r, x-r:x+r]
+        crop = ResizeWithAspectRatio(crop, 100)
+
+        if show:
+            cv2.imshow('Crop', crop)
+            cv2.waitKey(0)
+            cv2.destroyAllWindows()
+
+        # Redraw black circles
+        cv2.circle(black, (x, y), r, (0, 0, 0), -1)
+
+        crops.append(crop)
+
+    return crops
+
+
+if __name__ == '__main__':
+    path = '../../library/$ scrap_data/IMG_6600.jpg'
+    seg = segmentation(path)
