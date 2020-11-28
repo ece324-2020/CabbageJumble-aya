@@ -60,11 +60,11 @@ def main():
                try:
                    label1.append(as_list[3])
                except:
-                   label1.append(0)
+                   label1.append(-1)
                try:
                    label2.append(as_list[4])
                except:
-                   label2.append(0)
+                   label2.append(-1)
        except:
             t = 0
     
@@ -161,11 +161,11 @@ def main():
                           try:
                                  label1.append(as_list[3])
                           except:
-                                 label1.append(0)
+                                 label1.append(-1)
                           try:
                                  label2.append(as_list[4])
                           except:
-                                 label2.append(0)
+                                 label2.append(-1)
                     except:
                         print('EXCEPT in MAIN.PY')
                         t = 0

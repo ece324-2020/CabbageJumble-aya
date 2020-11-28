@@ -234,9 +234,9 @@ for idx,i in enumerate(all_images):
 
     #permute to what RandomHorizontalFlip wants
     image = image.permute(2,0,1)
-    transformed_image = 0
+    transformed_image = image
     for function in list_of_transforms:
-        transformed_image = function(image)
+        transformed_image = function(transformed_image)
 
 
     #adjust label accordingly if transform was applied
@@ -269,7 +269,10 @@ for idx,i in enumerate(all_images):
     with open(f'{args.save_labels_folder_path}/{index_of_image}_{save_extension}.txt', 'w') as f:
         for j in range(len(labels[labels_image_index_to_list_index[index_of_image]])):
             for k in range(5):
-                f.write(f"{labels[labels_image_index_to_list_index[index_of_image]][j][k]}\t")
+                if k == 4:
+                    f.write(f"{labels[labels_image_index_to_list_index[index_of_image]][j][k]}")
+                else:
+                    f.write(f"{labels[labels_image_index_to_list_index[index_of_image]][j][k]}\t")
             f.write("\n")
 	            
 #f.write(f'{labels[labels_image_index_to_list_index[index_of_image]][j][0]}\t{labels[labels_image_index_to_list_index[index_of_image]][j][1]}\t{labels[labels_image_index_to_list_index[index_of_image]][j][2]}\n')

@@ -145,20 +145,21 @@ def crop_all_coins(img_path, label_path, save_crop, save_label,
         
         for img_file in files:     # name.jpg
             #print(img_file)
-            if img_file == "116_0.jpg":                    
-                continue
-            # Filter out non-'.txt'
-            name, ext = os.path.splitext(img_file)     # name, .jpg
+            try:
+                # Filter out non-'.txt'
+                name, ext = os.path.splitext(img_file)     # name, .jpg
 
-            # Create label file path
-            label_file = os.path.join(label_path, f'{name}.txt')    # path/name.txt
+                # Create label file path
+                label_file = os.path.join(label_path, f'{name}.txt')    # path/name.txt
 
-            # Check if the label exists
-            if os.path.isfile(label_file):
-                img_file = os.path.join(path, img_file)             # path/name.jpg
-                crop_coin(img_file, label_file, save_crop, save_label, padding, show, resize)
-            else:
-                warnings.warn(f'Could not find label in for {img_file} in {label_file}')
+                # Check if the label exists
+                if os.path.isfile(label_file):
+                    img_file = os.path.join(path, img_file)             # path/name.jpg
+                    crop_coin(img_file, label_file, save_crop, save_label, padding, show, resize)
+                else:
+                    warnings.warn(f'Could not find label in for {img_file} in {label_file}')
+            except:
+                warnings.warn(f"Skipped: {img_file}")
     return None
 
 
@@ -173,8 +174,10 @@ if __name__ == '__main__':
     """
 
     # Edit these labels
-    img_path = '../Images_to_train_proper_labelling'
-    label_path = '../Labels_to_train_proper_labelling'
+    #img_path = '../Images_to_train_proper_labelling'
+    #label_path = '../Labels_to_train_proper_labelling'
+    img_path = '../Augmented_images_180'
+    label_path = '../Augmented_labels_180'
     save_crop = 'Baseline/Data_Images'
     save_label = 'Baseline/Data_Labels'
 
