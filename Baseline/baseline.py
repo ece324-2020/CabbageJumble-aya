@@ -1,6 +1,7 @@
-from baseline.segmentation.segmentation import segmentation
+from .segmentation.segmentation import segmentation
 from library.txt_label_encoder import load_labels
 import numpy as np
+import torch
 
 
 def baseline(img_path, label_path):
@@ -16,7 +17,10 @@ def baseline(img_path, label_path):
     2. Replace with neural network evaluation
     3. 
     """
-    labels = [3, 2, 4, 6, 3]
+    # labels = [3, 2, 4, 6, 3]
+    labels = []
+    for s in seg:
+        labels.append(model(s).eval())
 
     # Map labels to values
     values = {0: 1, 1: 1, 2: 5, 3: 5, 4: 10, 5: 10, 6: 25, 7: 25, 8: 100, 9: 100, 10: 200, 11: 200}
@@ -30,5 +34,6 @@ def baseline(img_path, label_path):
     return money, gt_value
 
 if __name__ == '__main__':
-    img_path, label_path = ''
+    img_path, label_path = '../data/Final_images/1.jpg', '../data/Labels - v1/1.txt'
+    model = torch.load('Classification/model2.pt')
     baseline(img_path, label_path)
