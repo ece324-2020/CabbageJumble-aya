@@ -23,7 +23,7 @@ parser.add_argument('--lr', type=float, default = 0.1)
 parser.add_argument('--epochs', type=int, default=10)
 parser.add_argument('--batch_size', type=int, default = 20)
 parser.add_argument('--num_classes', type=int, default = 12)
-parser.add_argument('--save_name', type=str, default = "model2.pt")
+parser.add_argument('--save_name', type=str, default = "model3.pt")
 
 
 
@@ -90,15 +90,20 @@ transform = transforms.Compose([transforms.ToTensor(),transforms.Normalize(mean 
 data = torchvision.datasets.ImageFolder(args.data_location, transform = transform)
 dataloader = torch.utils.data.DataLoader(data, batch_size=args.batch_size,shuffle=True)
 
+f = open("Normalization_Info2.txt","a")
+f.write(f"{R_mean} {G_mean} {B_mean} {R_std} {G_std} {B_std}")
+f.close()
+
+
 val_data = torchvision.datasets.ImageFolder(args.val_data_location, transform = transform)
 valloader = torch.utils.data.DataLoader(val_data, batch_size=len(val_data),shuffle=True)
 
 print("Done Loading Data")
 
 #getting model, loss function, and optimizer
-#model = coin_classifier(args.num_classes)
-#model.to(device)
-model = torch.load("model.pt")
+model = coin_classifier(args.num_classes)
+model.to(device)
+#model = torch.load("model.pt")
 
 
 loss_fnc = torch.nn.MSELoss()
