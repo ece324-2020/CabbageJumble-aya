@@ -3,5 +3,5 @@
 
 for i in {0..11}
 do
-   mkdir DATA/$i
+   mkdir EXTRA/$i
 done
