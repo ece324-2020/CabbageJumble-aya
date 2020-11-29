@@ -1,105 +1,79 @@
-"""
-File for Segmentation component of Cabbage Jumbleaya
-
-Testing segmentation.
-"""
-
-
 import numpy as np
 import cv2
 from library.ResizeWithAspectRatio import ResizeWithAspectRatio
 from library.baseline.segmentation.contours import argmax_contour_area, children_area, arg_large_areas
 
-# Open image
-img_original = cv2.imread('../../../baseline/segmentation/test_images/coins.jpg')
 
-# Resize so it fits on screen
-img = ResizeWithAspectRatio(img_original, width=600)
+def segmentation(img_path, show: bool = False):
+    img = cv2.imread(img_path)
 
-# Create grey image
-im_grey = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-im_grey = cv2.medianBlur(im_grey, 5)
-im_thresh = cv2.adaptiveThreshold(im_grey, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY, 11, 2)
+    # Create grey image
+    im_grey = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    im_grey = cv2.medianBlur(im_grey, 5)
+    im_thresh = cv2.adaptiveThreshold(im_grey, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY, 11, 2)
 
-# Get contours
-contours, hierarchy = cv2.findContours(im_thresh, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
-contours = np.array(contours, dtype=object)
+    # Get contours
+    contours, hierarchy = cv2.findContours(im_thresh, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+    contours = np.array(contours, dtype=object)
 
-# Find largest contour
-max_ind = argmax_contour_area(contours)
+    # Find largest contour
+    max_ind = argmax_contour_area(contours)
 
-# Draw ALL CONTOURS
-# cv2.drawContours(img, contours, -1, (0, 255, 0), 3)
+    # Find children within largest child
+    index, area = children_area(contours, hierarchy, max_ind)
 
-# Draw LARGEST CONTOUR
-# cv2.drawContours(img, contours, max_ind, (255, 0, 0), 3)
+    # Draw CHILDREN > 2000 area
+    large_children = arg_large_areas(index, area, 2000)
 
-# Find children
-index, area = children_area(contours, hierarchy, max_ind)
+    # Convert large children to [x, y, z]
+    large_children = [cv2.minEnclosingCircle(contours[child]) for child in large_children]
+    large_children = np.around(np.array([[child[0][0], child[0][1], child[1]] for child in large_children])).astype(int)
 
-# Draw CHILDREN > 2000 area
-large_children = arg_large_areas(index, area, 2000)
-# cv2.drawContours(img, contours[large_children], -1, (255, 0, 0), 3)
+    # Filter overlaps
+    for i, child in enumerate(large_children):
+        dist = np.linalg.norm(child[0:2] - large_children[:, :2], axis=1)
+        # Filter smaller children that overlap
+        large_children = large_children[np.logical_or(dist >= child[2], large_children[:, 2] >= child[2])]
 
-cv2.imshow('Only coins', img)
-cv2.waitKey(0)
-cv2.destroyAllWindows()
+    # Mask
+    black = np.zeros(img.shape, dtype=np.uint8)
 
-
-# ============================== MASKING ============================== #
-
-# Mask
-black = np.zeros(img.shape, dtype=np.uint8)
-
-# Label
-labels = ''
-
-
-# Circle LARGE CHILDREN
-crop = []
-for child in large_children:
-    # From https://docs.opencv.org/3.4/dd/d49/tutorial_py_contour_features.html
-    (x, y), r = cv2.minEnclosingCircle(contours[child])
-    centre = (int(x), int(y))
-    r = int(r)
-    cv2.circle(black, centre, r, (255, 255, 255), -1)
-
-    scale = img_original.shape[0] / img.shape[0]
-    labels += f'{round(x*scale)}\t{round(y*scale)}\t{round(r*scale)}\n'
-
-    x, y, w, h = cv2.boundingRect(contours[child])
-    # cv2.rectangle(black, (x, y), (x+w, y+h), (0, 0, 255), 2)
-    # cv2.rectangle(img, (x, y), (x+w, y+h), (0, 0, 255), 2)
-
-    crop.append((x,y,x+w,y+h))
-
-with open('../../../baseline/segmentation/results/labels.txt', 'w') as f:
-    f.write(labels)
+    if show:
+        img_copy = np.copy(img)
+        for child in large_children:
+            x, y, r = child
+            # Draw circle
+            cv2.circle(img_copy, (x, y), r, (0, 255, 0), 3)
+        img_copy = ResizeWithAspectRatio(img_copy, 600)
+        cv2.imshow('Image', img_copy)
+        cv2.waitKey(0)
+        cv2.destroyAllWindows()
 
 
-# Show the image
+    # Crop out Children
+    crops = []
+    for child in large_children:
+        x, y, r = child
 
-# Print out coins only
-coins = img & black
+        # Create white circle mask
+        cv2.circle(black, (x, y), r, (255, 255, 255), -1)
 
-cv2.imshow('Only coins', coins)
-cv2.waitKey(0)
-cv2.destroyAllWindows()
+        crop = black[y-r:y+r, x-r:x+r] & img[y-r:y+r, x-r:x+r]
+        crop = ResizeWithAspectRatio(crop, 100)
 
-# for i, rect in enumerate(crop):
-#     x0, y0, x1, y1 = rect
-#     crop[i] = coins[y0-10:y1+10, x0-10:x1+10]
-#     crop[i] = ResizeWithAspectRatio(crop[i], 600)
-#     cv2.imshow(f'Coin {i}', crop[i])
-#
-#     cv2.waitKey(0)
-#     cv2.destroyAllWindows()
+        # if show:
+        #     cv2.imshow('Crop', crop)
+        #     cv2.waitKey(0)
+        #     cv2.destroyAllWindows()
 
-# Necessary to keep Python from crashing
-cv2.waitKey(0)
+        # Redraw black circles
+        cv2.circle(black, (x, y), r, (0, 0, 0), -1)
 
-# Close windows
-cv2.destroyAllWindows()
+        crops.append(crop)
 
-# Save image
-cv2.imwrite('../../../baseline/segmentation/test_images/coins_contours.jpg', img)
+    return crops
+
+
+if __name__ == '__main__':
+    path = '../../../data/Final_images/514.jpg'
+    seg = segmentation(path, show=True)

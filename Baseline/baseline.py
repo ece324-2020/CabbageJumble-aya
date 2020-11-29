@@ -1,9 +1,8 @@
 from library.txt_label_encoder import load_labels
+from library.baseline.segmentation.segmentation import segmentation
 import numpy as np
 import cv2
 import torch
-
-from segmentation import segmentation      # No error here
 
 
 def baseline(img_path, label_path):
@@ -44,7 +43,7 @@ if __name__ == '__main__':
 
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
     print(device)
-    model = torch.load("C:/Users/theda/PycharmProjects/CabbageJumble-aya/baseline/Classification/model2.pt", map_location=torch.device('cpu'))
-    # with open('Classification/model3.pt', 'rb') as f:
+    model = torch.load("C:/Users/theda/PycharmProjects/CabbageJumble-aya/baseline/model2.pt", map_location=torch.device('cpu'))
+    # with open('Classification/model3.pt', 'rb') as f:  Classification/
     # model = torch.load('model3.pt')
     baseline(img_path, label_path)
