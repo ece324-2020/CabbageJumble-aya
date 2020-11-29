@@ -12,7 +12,10 @@ from confusion_matrix import confusion
 
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
-model = torch.load("model2.pt", map_location=torch.device('cpu'))
+#model = torch.load("model_noHT.pt")
+model = torch.load("model2.pt")
+model.to(device)
+#data_location = "Validation_noHT"
 data_location = "Validation"
 
 model.to(device)
@@ -30,7 +33,6 @@ data = torchvision.datasets.ImageFolder(data_location, transform = transform)
 dataloader = torch.utils.data.DataLoader(data, batch_size=1,shuffle = True)
 
 pred_vs_GT = []
-device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
 correct = 0
 num = 0
@@ -46,14 +48,18 @@ for idx, i in enumerate(dataloader):
     if arg_predict == truth:
         correct+=1
     num+=1
-    print(in_data.shape)
+    #print(in_data.shape)
 print(correct/num)
 
 pred_vs_GT = np.array(pred_vs_GT)
-r = confusion(pred_vs_GT)
+labels, prediction = pred_vs_GT[:, 0], pred_vs_GT[:, 1]
+r = confusion(labels, prediction, plot = True, plot3d = True, text = True, HT = True)
 print()
 print(r)
 print()
+
+#labels, prediction = arr[:, 0], arr[:, 1]
+#confusion(labels, prediction, plot = True, plot3d = True, text = True, HT = False)
 
 
     
