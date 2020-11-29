@@ -1,7 +1,7 @@
 
 #makes 12 folders
 
-for i in {0..11}
+for i in {0..5}
 do
-   mkdir EXTRA/$i
+   mkdir DATA_noHT/$i
 done
