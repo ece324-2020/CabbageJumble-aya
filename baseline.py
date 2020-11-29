@@ -2,9 +2,9 @@ from library.txt_label_encoder import load_labels
 import numpy as np
 import cv2
 import torch
-from Baseline.Classification.models.model import *
+from baseline.Classification.models.model import coin_classifier
 
-from segmentation import segmentation      # No error here
+from library.baseline.segmentation import segmentation      # No error here
 
 
 def baseline(img_path, label_path):
@@ -48,7 +48,7 @@ if __name__ == '__main__':
     
     # with open('Classification/model3.pt', 'rb') as f:
     model = coin_classifier(12)
-    model.load_state_dict(torch.load("Baseline/Classification/model_state_dict3.pt"))
+    model.load_state_dict(torch.load("Baseline/Classification/model_state_dict3.pt"), map_location=torch.device('cpu'))
     model.eval()
     #model = torch.load('model3.pt')
     baseline(img_path, label_path)
