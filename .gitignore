@@ -9,13 +9,13 @@ data/Final_images
 data/final_labels
 data/Final_images-20201118T145505Z-001.zip
 
-<<<<<<< HEAD
+#<<<<<<< HEAD
 ## Data for training classification
 Baseline/Data_Images
 Baseline/Data_Labels
 Baseline/Classification/DATA
 Baseline/Classification/Validation
-=======
+#=======
 ## Baseline
 baseline/Classification/Validation/
->>>>>>> 11866d0045b3db838059e60256a17d0d58a17474
+#>>>>>>> 11866d0045b3db838059e60256a17d0d58a17474
