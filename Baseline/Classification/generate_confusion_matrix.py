@@ -10,8 +10,12 @@ import time
 from confusion_matrix import confusion
 
 
-model = torch.load("model2.pt")
+device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+
+model = torch.load("model2.pt", map_location=torch.device('cpu'))
 data_location = "Validation"
+
+model.to(device)
 
 f = open("Normalization_Info.txt","r")
 norm_info = f.read()
