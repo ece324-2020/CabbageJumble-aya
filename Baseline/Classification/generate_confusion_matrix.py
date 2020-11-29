@@ -46,6 +46,7 @@ for idx, i in enumerate(dataloader):
     if arg_predict == truth:
         correct+=1
     num+=1
+    print(in_data.shape)
 print(correct/num)
 
 pred_vs_GT = np.array(pred_vs_GT)
