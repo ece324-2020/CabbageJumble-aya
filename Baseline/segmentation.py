@@ -75,5 +75,5 @@ def segmentation(img_path, show: bool = False):
 
 
 if __name__ == '__main__':
-    path = '../../data/Final_images/514.jpg'
+    path = '../data/Final_images/514.jpg'
     seg = segmentation(path, show=True)
