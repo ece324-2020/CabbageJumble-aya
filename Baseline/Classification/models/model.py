@@ -5,10 +5,10 @@ import torch.nn.functional as F
 class coin_classifier(nn.Module):
     def __init__(self,num_classes):
         super(coin_classifier,self).__init__()
-        #input size is 100 x 100x3
+        #input size is 100 x 100 x 3
         self.conv1 = nn.Conv2d(in_channels = 3, out_channels = 10,kernel_size = 3, stride = 1)
         #size is 98 x 98 x 10
-        self.pool = nn.MaxPool2d(2,stride = 2)
+        self.pool = nn.MaxPool2d(2, stride = 2)
         #size is 49x49 x 10
         self.conv2 = nn.Conv2d(in_channels = 10, out_channels = 20,kernel_size = 3, stride = 1)
         #size is 47x47 x 20

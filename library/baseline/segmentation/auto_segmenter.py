@@ -4,9 +4,9 @@ from library.ResizeWithAspectRatio import ResizeWithAspectRatio
 from library.load_images_from_folder import load_images_from_folder
 from library.baseline.segmentation.contours import argmax_contour_area, children_area, arg_large_areas
 
-path = f'../../../data/Final_images/514.jpg'
-images = [cv2.imread(path)]
-# images = load_images_from_folder('../../../data/Final_images')
+# path = f'../../../data/Final_images/514.jpg'
+# images = [cv2.imread(path)]
+images = load_images_from_folder('../../../data/Final_images')
 
 for i, img_original in enumerate(images):
     # Resize so it fits on screen

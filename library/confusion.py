@@ -21,7 +21,7 @@ def confusion(labels, prediction, plot: bool = False, plot3d: bool = False, text
     :return: ndarray, 2D - confusion matrix
     """
     # Create confusion matrix
-    r = confusion_matrix(labels, prediction)
+    r = confusion_matrix(labels, prediction, labels=list(range(12)))
 
     # Get names and numbers
     label_yolo = {
@@ -92,9 +92,6 @@ def confusion(labels, prediction, plot: bool = False, plot3d: bool = False, text
 
 if __name__ == '__main__':
     array = np.array(
-        [[0, 0], [1, 1], [5, 1], [5, 1], [1, 2], [2, 2], [2, 2], [3, 3], [4, 4], [5, 5], [6, 6], [7, 7], [8, 8], [9,
-                                                                                                                 9], [10,
-                                                                                                                10], [11,
-                                                                                                                11]])
-
+        [[0, 0], [1, 1], [5, 1], [5, 1], [1, 2], [2, 2], [2, 2],
+         [3, 3], [4, 4], [5, 5], [6, 6], [7, 7], [8, 8], [9, 9], [10,10], [11, 11]])
     r = confusion(array, plot=False, plot3d=True, text=False)

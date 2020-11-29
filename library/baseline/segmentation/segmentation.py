@@ -7,6 +7,9 @@ from library.baseline.segmentation.contours import argmax_contour_area, children
 def segmentation(img_path, show: bool = False):
     img = cv2.imread(img_path)
 
+    if show:
+        print(img)
+
     # Create grey image
     im_grey = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     im_grey = cv2.medianBlur(im_grey, 5)
@@ -52,6 +55,7 @@ def segmentation(img_path, show: bool = False):
 
     # Crop out Children
     crops = []
+    coord = []
     for child in large_children:
         x, y, r = child
 
@@ -59,7 +63,7 @@ def segmentation(img_path, show: bool = False):
         cv2.circle(black, (x, y), r, (255, 255, 255), -1)
 
         crop = black[y-r:y+r, x-r:x+r] & img[y-r:y+r, x-r:x+r]
-        crop = ResizeWithAspectRatio(crop, 100)
+        crop = ResizeWithAspectRatio(crop, 100, 100)
 
         # if show:
         #     cv2.imshow('Crop', crop)
@@ -70,8 +74,9 @@ def segmentation(img_path, show: bool = False):
         cv2.circle(black, (x, y), r, (0, 0, 0), -1)
 
         crops.append(crop)
+        coord.append((x, y, r))
 
-    return crops
+    return crops, np.array(coord)
 
 
 if __name__ == '__main__':

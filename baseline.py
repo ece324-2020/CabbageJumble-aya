@@ -1,16 +1,20 @@
 from library.txt_label_encoder import load_labels
 import numpy as np
 import cv2
+import torchvision
+import torchvision.transforms as transforms
 import torch
 from baseline.Classification.models.model import coin_classifier
+from baseline.Classification.split_data import split_data
 
-from library.baseline.segmentation import segmentation      # No error here
+from library.baseline.segmentation.segmentation import segmentation      # No error here
 
 
 def baseline(img_path, label_path):
     # Segment Images
-    seg = segmentation(img_path, show=True)
-
+    seg, coord = np.array(segmentation(img_path, show=False))
+    if seg.ndim == 1:
+        return None
     # Pass 100x100 images to model
     # Get labels
     """
@@ -20,35 +24,65 @@ def baseline(img_path, label_path):
     2. Replace with neural network evaluation
     3. 
     """
-    labels = [3, 2, 4, 6, 3]
+    # seg = seg[:, :, :, ::-1].copy()
+    seg = torch.from_numpy(seg).float()
+    with open("baseline/Classification/Normalization_Info.txt", "r") as f:
+        norm_info = f.read()
+    R_mean, G_mean, B_mean, R_std, G_std, B_std = [float(i) for i in norm_info.split()]
+
+    seg[:, :, :, 0] = (seg[:, :, :, 0] - R_mean) / (R_std + 1e-38)
+    seg[:, :, :, 1] = (seg[:, :, :, 1] - G_mean) / (G_std + 1e-38)
+    seg[:, :, :, 2] = (seg[:, :, :, 2] - B_mean) / (B_std + 1e-38)
+
+    labels = []
+
     for s in seg:
-        cv2.imshow('Figure', s)
-        cv2.waitKey(0)
-    cv2.destroyAllWindows()
-    # labels = []
-    # for s in seg:
-    #     labels.append(model(s).eval())
+        s = s.reshape((1,) + s.shape)
+        s = s.permute(0, 3, 1, 2)
+        predict = model(s)
+        predict = torch.argmax(predict,1).item()
+        labels.append(predict)
 
     # Map labels to values
     values = {0: 1, 1: 1, 2: 5, 3: 5, 4: 10, 5: 10, 6: 25, 7: 25, 8: 100, 9: 100, 10: 200, 11: 200}
 
     money = [values[label] for label in labels]
-    money = sum(money)
+    money.sort()
+    # money = sum(money)
 
     ground_truth = load_labels(label_path)
-    gt_value = np.sum(ground_truth[:, 3])
+    gt_value = ground_truth[:, 3]
+    gt_value.sort()
+    # gt_value = np.sum(gt_value)
 
     return money, gt_value
 
 if __name__ == '__main__':
-    img_path, label_path = '../Augmented_images_90', '../Augmented_labels_90'
+    money, gt_money = [], []
+    for i in range(33, 100):
+        img_path, label_path = f'data/Final_images/{i}.jpg', f'data/Labels - v1/{i}.txt'
+        device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+        model = coin_classifier(12)
+        model.load_state_dict(torch.load("Baseline/Classification/model_state_dict3.pt", map_location=torch.device('cpu')))
+        model.eval()
+        a = baseline(img_path, label_path)
 
-    device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
-    print(device)
-    
-    # with open('Classification/model3.pt', 'rb') as f:
-    model = coin_classifier(12)
-    model.load_state_dict(torch.load("Baseline/Classification/model_state_dict3.pt"), map_location=torch.device('cpu'))
-    model.eval()
-    #model = torch.load('model3.pt')
-    baseline(img_path, label_path)
+        if a is not None:
+            money.append(sum(a[0]))
+            gt_money.append(sum(a[1]))
+
+        print(i, a)
+
+    money = np.array(money)
+    gt_money = np.array(gt_money)
+
+    diff = gt_money - money
+    acc = np.mean(np.where(diff == 0))
+    mean_diff = np.mean(diff)
+    std_diff = np.std(diff)
+
+"""
+Accuracy: 0 (didn't get value correct in any)
+Mean: 23.70 cents
+Std: 98.80 cents
+"""
