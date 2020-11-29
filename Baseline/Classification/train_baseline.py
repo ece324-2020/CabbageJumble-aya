@@ -11,6 +11,7 @@ from models.model import *
 
 #example to run the code
 #py train_baseline.py --data_location DATA --num_classes 4 --val_data_location Validation
+#py train_baseline.py --data_location DATA_noHT --num_classes 6 --val_data_location Validation_noHT
 
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
@@ -23,7 +24,7 @@ parser.add_argument('--lr', type=float, default = 0.1)
 parser.add_argument('--epochs', type=int, default=10)
 parser.add_argument('--batch_size', type=int, default = 20)
 parser.add_argument('--num_classes', type=int, default = 12)
-parser.add_argument('--save_name', type=str, default = "model3.pt")
+parser.add_argument('--save_name', type=str, default = "model_noHT.pt")
 
 
 
@@ -203,5 +204,5 @@ print(f"Validation Accuracy is: {val_acc[-1]}")
 #summary(model, input_size=(3, 56, 56))
 
 
-
+model.to("cpu")
 torch.save(model,args.save_name)
