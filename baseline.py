@@ -2,6 +2,7 @@ from library.txt_label_encoder import load_labels
 import numpy as np
 import cv2
 import torch
+from Baseline.Classification.models.model import *
 
 from segmentation import segmentation      # No error here
 
@@ -40,11 +41,14 @@ def baseline(img_path, label_path):
     return money, gt_value
 
 if __name__ == '__main__':
-    img_path, label_path = '../data/Final_images/514.jpg', '../data/Labels - v1/514.txt'
+    img_path, label_path = '../Augmented_images_90', '../Augmented_labels_90'
 
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
     print(device)
-    model = torch.load("C:/Users/theda/PycharmProjects/CabbageJumble-aya/baseline/Classification/model2.pt", map_location=torch.device('cpu'))
+    
     # with open('Classification/model3.pt', 'rb') as f:
-    # model = torch.load('model3.pt')
+    model = coin_classifier(12)
+    model.load_state_dict(torch.load("Baseline/Classification/model_state_dict3.pt"))
+    model.eval()
+    #model = torch.load('model3.pt')
     baseline(img_path, label_path)
