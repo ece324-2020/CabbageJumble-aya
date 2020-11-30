@@ -9,22 +9,38 @@ from baseline.Classification.split_data import split_data
 
 from library.baseline.segmentation.segmentation import segmentation      # No error here
 
+def circle_to_square(coord):
+    """
+    Convert circle coordinates to square coordinates.
+    :param coord:
+    :return:
+    """
+    square = np.array((len(coord), 4))
+    x = coord[:, 0]
+    y = coord[:, 1]
+    r = coord[:, 2]
+    square[0] = x - r
+    square[1] = y - r
+    square[2] = x + r
+    square[3] = y + r
+
+    return square
+
 
 def baseline(img_path, label_path):
     # Segment Images
     seg, coord = np.array(segmentation(img_path, show=False))
+
+    # Check if ragged array
     if seg.ndim == 1:
         return None
+
+    # Square circle
+    square = circle_to_square(coord)
+
+
     # Pass 100x100 images to model
     # Get labels
-    """
-    James:
-    
-    1. Delete labels = ...
-    2. Replace with neural network evaluation
-    3. 
-    """
-    # seg = seg[:, :, :, ::-1].copy()
     seg = torch.from_numpy(seg).float()
     with open("baseline/Classification/Normalization_Info.txt", "r") as f:
         norm_info = f.read()
@@ -59,7 +75,7 @@ def baseline(img_path, label_path):
 
 if __name__ == '__main__':
     money, gt_money = [], []
-    for i in range(33, 100):
+    for i in range(34, 100):
         img_path, label_path = f'data/Final_images/{i}.jpg', f'data/Labels - v1/{i}.txt'
         device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
         model = coin_classifier(12)
