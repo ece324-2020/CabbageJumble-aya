@@ -37,7 +37,7 @@ def baseline(img_path, label_path):
     ground_truth = load_labels(label_path)
 
     # Segment Images
-    seg, coord = np.array(segmentation(img_path, show=False))
+    seg, coord = segmentation(img_path, show=False)
 
     # Check if ragged array -- should use try-except(with warning) instead
     if seg.ndim == 1:
