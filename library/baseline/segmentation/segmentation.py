@@ -63,8 +63,8 @@ def segmentation(img_path, show: bool = False):
         cv2.circle(black, (x, y), r, (255, 255, 255), -1)
 
         crop = black[y-r:y+r, x-r:x+r] & img[y-r:y+r, x-r:x+r]
-        crop = ResizeWithAspectRatio(crop, 100, 100)
-
+        #crop = ResizeWithAspectRatio(crop, 100, 100)
+        crop = cv2.resize(crop, (100, 100), interpolation=cv2.INTER_AREA)
         # if show:
         #     cv2.imshow('Crop', crop)
         #     cv2.waitKey(0)
@@ -76,7 +76,7 @@ def segmentation(img_path, show: bool = False):
         crops.append(crop)
         coord.append((x, y, r))
 
-    return crops, np.array(coord)
+    return np.array(crops), np.array(coord)
 
 
 if __name__ == '__main__':
