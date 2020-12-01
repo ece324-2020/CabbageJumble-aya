@@ -49,16 +49,26 @@ def baseline(img_path, label_path):
     
     dictionary = {(1, 72): 0, (1, 84): 1, (5, 72): 2, (5, 84): 3, (10, 72): 4, (10, 84): 5, (25, 72): 6, (25, 84): 7, (100, 72): 8, (100, 84): 9, (200, 72): 10, (200, 84): 11}
     
-    
-    
-    
-    
     # Segment Images
     #seg is a np array of segmentation images
     #coord is the x,y,r coordinates
 
     seg, coord = segmentation(img_path, show=False)
     
+    seg = seg[:,:,:,::-1]
+
+    count = 0
+    for s in seg:
+      plt.imshow(s)
+      plt.show()
+
+      if count == 3:
+        plt.imsave("Baseline/Classification/ex_image.jpg",s)
+        break
+      count += 1
+      
+
+
 
     ground_truth = load_labels(label_path)
     for idx in range(len(ground_truth)):
@@ -86,7 +96,7 @@ def baseline(img_path, label_path):
 =======
     # Pass 100x100 images to model
     # Get labels
-    seg = torch.from_numpy(seg)
+    seg = torch.from_numpy(seg.copy())
 
     
 
@@ -100,7 +110,7 @@ def baseline(img_path, label_path):
     #data = torchvision.datasets.ImageFolder(data_location, transform = transform)
     #seg = transform(seg)
     
-
+    
     seg[:, :, :, 0] = (seg[:, :, :, 0] - R_mean) / (R_std + 1e-38)
     seg[:, :, :, 1] = (seg[:, :, :, 1] - G_mean) / (G_std + 1e-38)
     seg[:, :, :, 2] = (seg[:, :, :, 2] - B_mean) / (B_std + 1e-38)
@@ -116,16 +126,11 @@ def baseline(img_path, label_path):
         labels.append(predict)
 =======
     
-        
-
-    
 
     labels = []
     coord_updated = np.zeros((len(coord),4))
     coord_updated[:,:3] = coord
-    print()
-    print(coord_updated)
-    print()
+    
 
      # Map labels to values
     #values = {0: 1, 1: 1, 2: 5, 3: 5, 4: 10, 5: 10, 6: 25, 7: 25, 8: 100, 9: 100, 10: 200, 11: 200}
@@ -141,12 +146,12 @@ def baseline(img_path, label_path):
         #s = s.permute(2,0,1)
         #s = transform(s)
         #s = s.permute(1,2,0)
-        plt.imshow(s)
-        plt.show()
+        
         s = s.permute(2,0,1)
         s = s.reshape((1,s.shape[0],s.shape[1],s.shape[2]))
         
         predict = model(s.float())
+        #print(predict)
         predict = torch.argmax(predict,1).item()
         
         #coord_updated[idx,3] = values[predict]
@@ -351,7 +356,7 @@ if __name__ == '__main__':
         #try:
         if True:
             #img_path, label_path = f'data/Final_images/{i}.jpg', f'data/Labels - v1/{i}.txt'
-            img_path,label_path = f"../Augmented_images_90/1_1.jpg",f"../Augmented_labels_90/1_1.txt"
+            img_path,label_path = f"../Images_to_train_proper_labelling/174_0.jpg",f"../Labels_to_train_proper_labelling/174_0.txt"
             a = baseline(img_path, label_path)
 
             if a is not None:
