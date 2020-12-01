@@ -63,12 +63,17 @@ def segmentation(img_path, show: bool = False):
         cv2.circle(black, (x, y), r, (255, 255, 255), -1)
 
         crop = black[y-r:y+r, x-r:x+r] & img[y-r:y+r, x-r:x+r]
+<<<<<<< HEAD
+        # crop = ResizeWithAspectRatio(crop, 100, 100)
+        crop = cv2.resize(crop, (100, 100), interpolation=cv2.INTER_AREA)
+=======
         #crop = ResizeWithAspectRatio(crop, 100, 100)
         crop = cv2.resize(crop, (100, 100), interpolation=cv2.INTER_AREA)
         # if show:
         #     cv2.imshow('Crop', crop)
         #     cv2.waitKey(0)
         #     cv2.destroyAllWindows()
+>>>>>>> ee4a516f9c5507bb156606e96c0390b6d977dfb9
 
         # Redraw black circles
         cv2.circle(black, (x, y), r, (0, 0, 0), -1)
@@ -81,4 +86,9 @@ def segmentation(img_path, show: bool = False):
 
 if __name__ == '__main__':
     path = '../../../data/Final_images/514.jpg'
-    seg = segmentation(path, show=True)
+    seg, coord = segmentation(path, show=False)
+
+    for s in seg:
+        cv2.imshow('Figure', s)
+        cv2.waitKey(0)
+        cv2.destroyAllWindows()

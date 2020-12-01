@@ -1,4 +1,5 @@
 from library.txt_label_encoder import load_labels
+from library.baseline.segmentation.segmentation import segmentation
 import numpy as np
 import cv2
 import torchvision
@@ -8,6 +9,38 @@ from Baseline.Classification.models.model import coin_classifier
 from Baseline.Classification.split_data import split_data
 import matplotlib.pyplot as plt
 
+<<<<<<< HEAD
+
+def circle_to_square(coord):
+    """
+    Convert circle coordinates to square coordinates.
+
+    :param coord: np.ndarray - [[x, y, r], [x, y, r], ...]
+    :return: np.ndarray - [[x0, y0, x1, y1], [...], ...]
+    """
+    square = np.zeros((len(coord), 4))
+
+    # Create views into coord
+    x = coord[:, 0]
+    y = coord[:, 1]
+    r = coord[:, 2]
+
+    # Assign square values
+    square[0] = x - r
+    square[1] = y - r
+    square[2] = x + r
+    square[3] = y + r
+
+    return square
+
+
+def baseline(img_path, label_path):
+    # Hehehe
+    ground_truth = load_labels(label_path)
+
+    # Segment Images
+    seg, coord = segmentation(img_path, show=False)
+=======
 from library.baseline.segmentation.segmentation import segmentation      # No error here
 import warnings
 
@@ -50,11 +83,24 @@ def baseline(img_path, label_path):
         ground_truth[idx,1] = y1
         ground_truth[idx,2] = x2
         ground_truth[idx,3] = y2
+<<<<<<< HEAD
     '''
     # Check if ragged array
+=======
+>>>>>>> ee4a516f9c5507bb156606e96c0390b6d977dfb9
+
+    # Check if ragged array -- should use try-except(with warning) instead
+>>>>>>> 293eedd7c2a5aa3d3a07ded71583c0fdb454e673
     if seg.ndim == 1:
         return None
 
+<<<<<<< HEAD
+    # Square circle
+    square = circle_to_square(coord)
+
+    # Convert segmented images to torch and normalize
+    seg = torch.from_numpy(seg).float()
+=======
     # Pass 100x100 images to model
     # Get labels
     seg = torch.from_numpy(seg.copy())
@@ -62,6 +108,7 @@ def baseline(img_path, label_path):
     
 
 
+>>>>>>> ee4a516f9c5507bb156606e96c0390b6d977dfb9
     with open("baseline/Classification/Normalization_Info.txt", "r") as f:
         norm_info = f.read()
     R_mean, G_mean, B_mean, R_std, G_std, B_std = [float(i) for i in norm_info.split()]
@@ -75,6 +122,16 @@ def baseline(img_path, label_path):
     seg[:, :, :, 1] = (seg[:, :, :, 1] - G_mean) / (G_std + 1e-38)
     seg[:, :, :, 2] = (seg[:, :, :, 2] - B_mean) / (B_std + 1e-38)
 
+<<<<<<< HEAD
+    # Run through PyTorch
+    labels = []
+    for s in seg:
+        s = s.reshape((1,) + s.shape)
+        s = s.permute(0, 3, 1, 2)
+        predict = model(s)
+        predict = torch.argmax(predict,1).item()
+        labels.append(predict)
+=======
     
 
     labels = []
@@ -84,6 +141,7 @@ def baseline(img_path, label_path):
 
      # Map labels to values
     #values = {0: 1, 1: 1, 2: 5, 3: 5, 4: 10, 5: 10, 6: 25, 7: 25, 8: 100, 9: 100, 10: 200, 11: 200}
+>>>>>>> ee4a516f9c5507bb156606e96c0390b6d977dfb9
 
     for idx,s in enumerate(seg):
         #cv2.imshow('Crop', s)
@@ -375,6 +433,7 @@ if __name__ == '__main__':
     money = np.array(money)
     gt_money = np.array(gt_money)
 
+    # Calculate Statistics
     diff = gt_money - money
     acc = np.mean(np.where(diff == 0))
     mean_diff = np.mean(diff)
