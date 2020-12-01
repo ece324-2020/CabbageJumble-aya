@@ -8,17 +8,22 @@ import numpy as np
 import matplotlib.pyplot as plt
 import time
 from confusion_matrix import confusion
+from models.model import coin_classifier
 
 
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
 #model = torch.load("model_noHT.pt")
-model = torch.load("model2.pt")
-model.to(device)
+#model = torch.load("model2.pt")
+#model.to(device)
 #data_location = "Validation_noHT"
-data_location = "Validation"
+data_location = "DATA"
 
+model = coin_classifier(12)
+model.load_state_dict(torch.load("model_state_dict_model2.pt"))
 model.to(device)
+model.eval()
+
 
 f = open("Normalization_Info.txt","r")
 norm_info = f.read()
@@ -26,7 +31,27 @@ f.close()
 norm_info = norm_info.split()
 norm_info = [float(i) for i in norm_info]
 R_mean,G_mean,B_mean,R_std,G_std,B_std = norm_info
-#print(R_mean,G_mean,B_mean,R_std,G_std,B_std)
+
+
+
+#data = "ex_image.jpg"
+data = "DATA/11/174_0-crop_6.jpg"
+
+
+image = plt.imread(data)
+#print(image.shape)
+transform = transforms.Compose([transforms.ToTensor(),transforms.Normalize(mean = [R_mean,G_mean,B_mean],std = [R_std,G_std,B_std])])
+
+image = transform(image)
+#print(image.shape)
+image = image.reshape(1,image.shape[0],image.shape[1],image.shape[2]).to(device)
+
+#prediction = model(image.float())
+#print(prediction)
+
+#arg_predict = torch.argmax(prediction,1).item()
+#print(arg_predict)
+
 
 transform = transforms.Compose([transforms.ToTensor(),transforms.Normalize(mean = [R_mean,G_mean,B_mean],std = [R_std,G_std,B_std])])
 data = torchvision.datasets.ImageFolder(data_location, transform = transform)
@@ -39,6 +64,7 @@ num = 0
 
 for idx, i in enumerate(dataloader):
     in_data = i[0].to(device)
+    #print(in_data.shape)
     truth = i[1].item()
     predict =  model(in_data.float())
     predict.to(device)
@@ -48,6 +74,11 @@ for idx, i in enumerate(dataloader):
     if arg_predict == truth:
         correct+=1
     num+=1
+
+    if torch.equal(in_data,image):
+        print("HAKREAFJLLASDJFLSADKFJLSADFJSAL")
+        print(arg_predict)
+
     #print(in_data.shape)
 print(correct/num)
 

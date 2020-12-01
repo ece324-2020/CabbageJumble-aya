@@ -11,6 +11,7 @@ import matplotlib.pyplot as plt
 from library.baseline.segmentation.segmentation import segmentation      # No error here
 import warnings
 
+import os
 
 def baseline(img_path, label_path):
     
@@ -24,20 +25,21 @@ def baseline(img_path, label_path):
     
     seg = seg[:,:,:,::-1]
 
-    count = 0
-    for s in seg:
-      plt.imshow(s)
-      plt.show()
+    #count = 0
+    #for s in seg:
+    #  plt.imshow(s)
+    #  plt.show()
 
-      if count == 3:
-        plt.imsave("Baseline/Classification/ex_image.jpg",s)
-        break
-      count += 1
+    #  if count == 3:
+    #    plt.imsave("Baseline/Classification/ex_image.jpg",s)
+    #    break
+    #  count += 1
       
 
 
-
+    
     ground_truth = load_labels(label_path)
+    '''
     for idx in range(len(ground_truth)):
         tup = (ground_truth[idx,-2],ground_truth[idx,-1])
         mapping = dictionary[tup]
@@ -48,7 +50,7 @@ def baseline(img_path, label_path):
         ground_truth[idx,1] = y1
         ground_truth[idx,2] = x2
         ground_truth[idx,3] = y2
-
+    '''
     # Check if ragged array
     if seg.ndim == 1:
         return None
@@ -288,7 +290,10 @@ if __name__ == '__main__':
     model.load_state_dict(torch.load("Baseline/Classification/model_state_dict_model2.pt"))
     model.to(device)
     model.eval()
-
+    #model = coin_classifier(6)
+    #model.load_state_dict(torch.load("Baseline/Classification/model_state_dict_noHT.pt"))
+    #model.to(device)
+    #model.eval()
 
     segmentation_accuracy_acc = []
     classification_accuracy_acc = []
@@ -296,34 +301,75 @@ if __name__ == '__main__':
     seg_acc1_acc = []
     seg_acc2_acc = []
     
-    #all_images = os.sorted("../Augmented_images_90/1_1.jpg")
-    #all_labels = os.sorted("../Augmented_labels_90/1_1.txt")    
+    #image_folder_path = "TEST_DATA/images"
+    #label_folder_path = "TEST_DATA/labels"
+    #label_folder_path = "TEST_DATA/labels_noHT"
+    image_folder_path = "TEST_DATA/images_2"
+    label_folder_path = "TEST_DATA/labels_2"
 
-    for i in range(34, 35):
-        #try:
-        if True:
-            #img_path, label_path = f'data/Final_images/{i}.jpg', f'data/Labels - v1/{i}.txt'
-            img_path,label_path = f"../Images_to_train_proper_labelling/174_0.jpg",f"../Labels_to_train_proper_labelling/174_0.txt"
+    all_images = os.listdir(image_folder_path)
+    all_labels = os.listdir(label_folder_path)    
+
+    for idx, i in enumerate(all_labels):
+        
+        try:
+            name = i.split(".")[0]
+            print(name)
+            img_path, label_path = f'{image_folder_path}/{name}.jpg', f'{label_folder_path}/{i}'
+            #img_path,label_path = f"../Images_to_train_proper_labelling/174_0.jpg",f"../Labels_to_train_proper_labelling/174_0.txt"
             a = baseline(img_path, label_path)
 
             if a is not None:
-                #money.append(sum(a[0]))
-                #gt_money.append(sum(a[1]))
                 segmentation_accuracy_acc.append(a[0])
                 classification_accuracy_acc.append(a[1])
                 pred_vs_GT_acc.append(a[2])
                 seg_acc1_acc.append(a[3])
                 seg_acc2_acc.append(a[4])
 
-            #print(i, a)
-        #except:
-        #    warnings.warn(f"broke at f = {i}")
+            print(i, a)
+        except:
+            warnings.warn(f"broke at f = {i}")
 
+    segmentation_accuracy_acc = np.array(segmentation_accuracy_acc)
+    classification_accuracy_acc = np.array(classification_accuracy_acc)
+    pred_vs_GT_acc = np.array(pred_vs_GT_acc)
+    seg_acc2_acc = np.array(seg_acc2_acc)
+    '''
     print(segmentation_accuracy_acc)
     print(classification_accuracy_acc)
     print(pred_vs_GT_acc)
     print(seg_acc1_acc)
     print(seg_acc2_acc) 
+    '''
+    print("\n\n")
+
+
+    overview_acc = 0
+    dice = 0
+    class_acc = 0
+    match_acc = 0
+    for i in range(len(segmentation_accuracy_acc)):
+      sum_pred = 0
+      sum_gt = 0
+      for idx,j in enumerate(pred_vs_GT_acc[i][0]):
+        sum_pred += j[0]
+        sum_gt += j[1]
+      val = abs(sum_pred-sum_gt)/sum_gt
+      overview_acc += val
+      
+      dice += segmentation_accuracy_acc[i]
+      class_acc += classification_accuracy_acc[i]
+      match_acc += seg_acc2_acc[i]
+
+    overview_acc /= len(segmentation_accuracy_acc)
+    dice /= len(segmentation_accuracy_acc)
+    class_acc /= len(segmentation_accuracy_acc)
+    match_acc /= len(segmentation_accuracy_acc)
+
+    print(overview_acc)
+    print(dice)
+    print(class_acc)
+    print(match_acc)
 
     '''
     money = np.array(money)
