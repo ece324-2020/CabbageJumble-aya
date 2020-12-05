@@ -1,4 +1,4 @@
-#example to run: py change_v0_v1_labels.py --labels_path FINAL_final_labels --fixed_labels_path corrected_FINAL_final_labels 
+#example to run: py change_label_naming.py --labels_path FINAL_final_labels --fixed_labels_path corrected_FINAL_final_labels 
 
 
 '''

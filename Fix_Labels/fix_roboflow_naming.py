@@ -1,4 +1,4 @@
-#example to run: py fix_naming.py --images_folder_path ../../train --fix_images_folder_path ../../trian_fixed_naming
+#example to run: py fix_roboflow_naming.py --images_folder_path ../../train --fix_images_folder_path ../../trian_fixed_naming
 
 '''
 Yviel's photos were named: 1_jpg.rf.c2b8b5353d87b9d2040bcb353e456fd6 with roboflow, so this py file converts this name to 1.jpg

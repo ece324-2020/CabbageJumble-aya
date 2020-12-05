@@ -41,21 +41,3 @@ for idx,i in enumerate(all_labels):
         f.write(f"{j}\n")
     f.close()
     
-
-'''
-
-for idx,i in enumerate(all_labels):
-    label_index = int(i.split("_")[0])
-    labels_image_index_to_list_index[label_index] = idx
-    with open(f"{args.labels_folder_path}/{label_index}_0.txt", "r") as f:
-        file_with_labels = f.read()
-        lines = file_with_labels.split("\n")
-        subset_labels = []
-        for i in lines:
-            if i == "":
-                continue
-            temp = i.split("\t")
-            temp = [int(j) for j in temp]
-            subset_labels.append(temp)
-        labels.append(subset_labels)
-'''

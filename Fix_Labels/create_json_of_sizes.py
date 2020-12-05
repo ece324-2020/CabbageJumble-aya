@@ -3,7 +3,7 @@
 '''
 Change the big_folder_path, small_folder_path, and save_json_folder accordingly.
 
-Given 2 folders of images, with the same names, we wish to create a json file with a dictionary to map pixel sizes of one image to the other.
+Given 2 folders of images, with the same names of images in the folders, we wish to create a json file with a dictionary to map pixel sizes of one image to the other.
 
 This py file was used to match the x,y coordinates in the scaled imaged to the original image in the labels (txt files).
 

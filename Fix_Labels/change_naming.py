@@ -27,6 +27,8 @@ parser.add_argument('--renamed_labels_folder_path', type=str, required = True)
 args = parser.parse_args()
 
 all_images = sorted(os.listdir(args.images_folder_path))
+
+#changing images name
 #print(all_images)
 for idx,i in enumerate(all_images):
     image = copy.deepcopy(plt.imread(f"{args.images_folder_path}/{i}"))
@@ -37,6 +39,8 @@ for idx,i in enumerate(all_images):
 
 all_labels = sorted(os.listdir(args.labels_folder_path))
 
+
+#changing label names
 for idx,i in enumerate(all_labels):
     name = i.split(".")[0]
 

@@ -3,6 +3,8 @@
 '''
 Given 2 folders with the same naming convetion (ex. 34.jpg), it saves the unique images in images_folder_path
 fixed_images_folder_path should be a subset of images_folder_path
+
+This code was used to extract out images from matching Yviel's labelled images to our big unlablled dataset
 '''
 
 

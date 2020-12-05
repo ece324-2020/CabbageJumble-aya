@@ -28,7 +28,7 @@ for i in labels:
     print(lines)
     f.close()
     count+=1
-    #
+    
     if count == 2:
         break
 

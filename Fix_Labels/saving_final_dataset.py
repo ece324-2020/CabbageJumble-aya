@@ -2,6 +2,7 @@
 
 '''
 Given a full images folder with a subset of labels (due to some images being bad when we labelled) we wish to not include the bad images.
+This code copies those corresponding images with a label into a new folder.
 
 This py file saves the images that have their corresponding label in --save_images_path.
 
