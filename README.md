@@ -38,7 +38,8 @@ Cabbage Jumble-aya counts coins given a picture
 
 ### Accuracy and Results
 <img src =  "https://github.com/ece324-2020/CabbageJumble-aya/blob/main/Images/Example.png" width = "500" height = "500">
-width = "1000" height = "300">
+
+
 ### References and Acknowledgement
 - Source Code 1: https://github.com/Tianxiaomo/pytorch-YOLOv4
 - Source code 2: https://github.com/AlexeyAB/darknet
