@@ -1,0 +1,12 @@
+$0.01 Heads
+$0.01 Tails
+$0.05 Heads
+$0.05 Tails
+$0.10 Heads
+$0.10 Tails
+$0.25 Heads
+$0.25 Tails
+$1.00 Heads
+$1.00 Tails
+$2.00 Heads
+$2.00 Tails
