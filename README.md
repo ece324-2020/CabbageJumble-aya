@@ -26,6 +26,9 @@ Cabbage Jumble-aya counts coins given a picture
 ## Final Model
 <img src = "https://github.com/ece324-2020/CabbageJumble-aya/blob/main/Images/Full_arc.png" width = "1000" height = "300">
 
+## Example 
+
+
 ### Tools Used
 - Bounding GUI: https://github.com/ece324-2020/CabbageJumble-aya/tree/main/Bound_Shape_GUI
 - Labelling GUIS: https://github.com/ece324-2020/CabbageJumble-aya/tree/main/Classifier-GUI/src
@@ -34,8 +37,8 @@ Cabbage Jumble-aya counts coins given a picture
 <img src = "https://github.com/ece324-2020/CabbageJumble-aya/blob/main/Images/DataProc.png" width = "1000" height = "300">
 
 ### Accuracy and Results
-
-
+<img src =  "https://github.com/ece324-2020/CabbageJumble-aya/blob/main/Images/Example.png" width = "500" height = "500">
+width = "1000" height = "300">
 ### References and Acknowledgement
 - Source Code 1: https://github.com/Tianxiaomo/pytorch-YOLOv4
 - Source code 2: https://github.com/AlexeyAB/darknet
