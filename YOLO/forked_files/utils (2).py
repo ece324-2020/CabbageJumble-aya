@@ -446,7 +446,6 @@ def post_processing(img, conf_thresh, n_classes, nms_thresh, list_features_numpy
         bboxs_for_imgs = [
             boxes[0][index] + boxes[1][index] + boxes[2][index]
             for index in range(img.shape[0])]
-        # 分别对每一张图片的结果进行nms
         t3 = time.time()
         boxes = [nms(bboxs, nms_thresh) for bboxs in bboxs_for_imgs]
     else:
