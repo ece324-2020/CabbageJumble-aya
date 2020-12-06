@@ -20,16 +20,23 @@ Cabbage Jumble-aya counts coins given a picture
 |2020 Nov 16|Modifying GUI to label value and Heads/Tails|Convert JSON to txt, clean up coding library|Labelling values/Heads/Tails|
 
 ## Baseline Model
-add
+<img src = "https://github.com/ece324-2020/CabbageJumble-aya/blob/main/Images/baseline.png" width = "1000" height = "300">
+
 
 ## Final Model
-add
+<img src = "https://github.com/ece324-2020/CabbageJumble-aya/blob/main/Images/Full_arc.png" width = "1000" height = "300">
 
 ### Tools Used
-add
+- Bounding GUI: https://github.com/ece324-2020/CabbageJumble-aya/tree/main/Bound_Shape_GUI
+- Labelling GUIS: https://github.com/ece324-2020/CabbageJumble-aya/tree/main/Classifier-GUI/src
+
 ### Data Augmentation Techniques
-add
+<img src = "https://github.com/ece324-2020/CabbageJumble-aya/blob/main/Images/DataProc.png" width = "1000" height = "300">
+
 ### Accuracy and Results
-add
+
+
 ### References and Acknowledgement
-add
+- Source Code 1: https://github.com/Tianxiaomo/pytorch-YOLOv4
+- Source code 2: https://github.com/AlexeyAB/darknet
+- Paper Yolo v4: https://arxiv.org/abs/2004.10934
