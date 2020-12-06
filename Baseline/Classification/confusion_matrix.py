@@ -13,39 +13,50 @@ from matplotlib import cm
 from sklearn.metrics import confusion_matrix
 
 
-def confusion(labels, prediction, plot: bool = False, plot3d: bool = False, text: bool = False, HT:bool = True):
+def confusion(plot: bool = False, plot3d: bool = False, text: bool = False, **kwargs):
     """
     Create the confusion matrix for an array.
-    :param array: ndarray, 3D - [[[label, prediction], [label, prediction], ...]]
+    :param **kwargs:
+        1. array = ndarray, 3D - [[[label, prediction], [label, prediction], ...]]
+        2. label, prediction
+        3. matrix = ndarray, 2D - confusion matrix
+    :param plot:
+    :param plot3d:
+    :param text:
     :return: ndarray, 2D - confusion matrix
     """
+
+    array = kwargs.get('array', None)
+    label = kwargs.get('label', None)
+    prediction = kwargs.get('prediction', None)
+    matrix = kwargs.get('matrix', None)
+
     # Create confusion matrix
-    r = confusion_matrix(labels, prediction, labels = list(range(12)))
-    # Get names and numbers
-    if HT:
-        label_yolo = {
-            '$0.01 H': 0,
-            '$0.01 T': 1,
-            '$0.05 H': 2,
-            '$0.05 T': 3,
-            '$0.10 H': 4,
-            '$0.10 T': 5,
-            '$0.25 H': 6,
-            '$0.25 T': 7,
-            '$1.00 H': 8,
-            '$1.00 T': 9,
-            '$2.00 H': 10,
-            '$2.00 T': 11
-        }
+    if array is not None:
+        label, prediction = array[:, 0], array[:, 1]
+        r = confusion_matrix(label, prediction, labels=range(12))
+    elif label is not None and prediction is not None:
+        r = confusion_matrix(label, prediction, labels=range(12))
+    elif matrix is not None:
+        r = matrix
     else:
-        label_yolo = {
-            '$0.01': 0,
-            '$0.05': 1,
-            '$0.10': 2,
-            '$0.25': 3,
-            '$1.00': 4,
-            '$2.00': 5,
-        }
+        return
+
+    # Get names and numbers -- assume correct dimension
+    label_yolo = {
+        '$0.01 H': 0,
+        '$0.01 T': 1,
+        '$0.05 H': 2,
+        '$0.05 T': 3,
+        '$0.10 H': 4,
+        '$0.10 T': 5,
+        '$0.25 H': 6,
+        '$0.25 T': 7,
+        '$1.00 H': 8,
+        '$1.00 T': 9,
+        '$2.00 H': 10,
+        '$2.00 T': 11
+    }
     names = tuple(label_yolo.keys())
     numbers = tuple(label_yolo.values())
 
@@ -58,8 +69,7 @@ def confusion(labels, prediction, plot: bool = False, plot3d: bool = False, text
         plt.ylabel('Ground Truth')
 
         # Change axis labels
-        plt.xticks(numbers, names)
-        plt.xticks(rotation=45, ha='right')
+        plt.xticks(numbers, names, rotation=90)
         plt.yticks(numbers, names)
         # Show
         i = plt.imshow(r, cmap='binary')
@@ -70,25 +80,30 @@ def confusion(labels, prediction, plot: bool = False, plot3d: bool = False, text
         fig = plt.figure()
         ax = fig.gca(projection='3d')
 
+        ax.set_title('Confusion Matrix')
+
         # Set X-Y-Z labels
-        ax.set_xlabel('Prediction')
-        ax.set_ylabel('Ground Truth')
+        ax.set_xlabel('Prediction', labelpad=20)
+        ax.set_xticks(range(12))
+        ax.set_xticklabels(names, rotation=45)
+
+        ax.set_ylabel('Ground Truth', labelpad=20)
+        ax.set_yticks(range(12))
+        ax.set_yticklabels(names, rotation=-45)
+
         ax.set_zlabel('Confusion')
 
         # Plot
         X, Y = np.meshgrid(numbers, numbers)
-        print(X.shape)
-        print(r.shape)
         surf = ax.plot_surface(X, Y, r, cmap=cm.coolwarm, linewidth=0, antialiased=False)
 
-        ax.set_zlim(0, 1.01)
+        ax.set_zlim(0, np.amax(r))
         fig.colorbar(surf, shrink=0.5, aspect=5)
         plt.show()
 
     if text:
         # Print title
         string = '\t'.join(names) + '\n'
-        string =  '     \t' + string
 
         # Print data
         for i, name in enumerate(names):

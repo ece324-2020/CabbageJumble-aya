@@ -9,7 +9,7 @@ from Baseline.Classification.models.model import coin_classifier
 from Baseline.Classification.split_data import split_data
 import matplotlib.pyplot as plt
 
-<<<<<<< HEAD
+
 
 def circle_to_square(coord):
     """
@@ -40,13 +40,13 @@ def baseline(img_path, label_path):
 
     # Segment Images
     seg, coord = segmentation(img_path, show=False)
-=======
+
 from library.baseline.segmentation.segmentation import segmentation      # No error here
 import warnings
 
 import os
 
-def baseline(img_path, label_path):
+def baseline(img_path, label_path,count):
     
     dictionary = {(1, 72): 0, (1, 84): 1, (5, 72): 2, (5, 84): 3, (10, 72): 4, (10, 84): 5, (25, 72): 6, (25, 84): 7, (100, 72): 8, (100, 84): 9, (200, 72): 10, (200, 84): 11}
     
@@ -55,8 +55,25 @@ def baseline(img_path, label_path):
     #coord is the x,y,r coordinates
 
     seg, coord = segmentation(img_path, show=False)
+
+
+    
+    for idx,i in enumerate(seg):
+      cv2.imwrite(f"Baseline/test_images/{count}_{idx}.jpg",i)
+
+      
+    
+    for idx, i in enumerate(coord):
+      np.savetxt(f"Baseline/test_labels/{count}_{idx}.txt", i, fmt='%i', delimiter='\t')
+
+
+    #for i in seg:
+    #  cv2.imshow("Figure",i)
+    #  cv2.waitKey(0)
+    #  cv2.destroyAllWindows()
     
     seg = seg[:,:,:,::-1]
+    
 
     #count = 0
     #for s in seg:
@@ -83,32 +100,32 @@ def baseline(img_path, label_path):
         ground_truth[idx,1] = y1
         ground_truth[idx,2] = x2
         ground_truth[idx,3] = y2
-<<<<<<< HEAD
+
     '''
     # Check if ragged array
-=======
->>>>>>> ee4a516f9c5507bb156606e96c0390b6d977dfb9
+
 
     # Check if ragged array -- should use try-except(with warning) instead
->>>>>>> 293eedd7c2a5aa3d3a07ded71583c0fdb454e673
+
     if seg.ndim == 1:
         return None
 
-<<<<<<< HEAD
+
     # Square circle
     square = circle_to_square(coord)
 
     # Convert segmented images to torch and normalize
+    seg = seg.copy()
     seg = torch.from_numpy(seg).float()
-=======
+
     # Pass 100x100 images to model
     # Get labels
-    seg = torch.from_numpy(seg.copy())
+    #seg = torch.from_numpy(seg.copy())
 
     
 
 
->>>>>>> ee4a516f9c5507bb156606e96c0390b6d977dfb9
+
     with open("baseline/Classification/Normalization_Info.txt", "r") as f:
         norm_info = f.read()
     R_mean, G_mean, B_mean, R_std, G_std, B_std = [float(i) for i in norm_info.split()]
@@ -117,12 +134,13 @@ def baseline(img_path, label_path):
     #data = torchvision.datasets.ImageFolder(data_location, transform = transform)
     #seg = transform(seg)
     
+
     
     seg[:, :, :, 0] = (seg[:, :, :, 0] - R_mean) / (R_std + 1e-38)
     seg[:, :, :, 1] = (seg[:, :, :, 1] - G_mean) / (G_std + 1e-38)
     seg[:, :, :, 2] = (seg[:, :, :, 2] - B_mean) / (B_std + 1e-38)
 
-<<<<<<< HEAD
+
     # Run through PyTorch
     labels = []
     for s in seg:
@@ -131,7 +149,6 @@ def baseline(img_path, label_path):
         predict = model(s)
         predict = torch.argmax(predict,1).item()
         labels.append(predict)
-=======
     
 
     labels = []
@@ -141,7 +158,7 @@ def baseline(img_path, label_path):
 
      # Map labels to values
     #values = {0: 1, 1: 1, 2: 5, 3: 5, 4: 10, 5: 10, 6: 25, 7: 25, 8: 100, 9: 100, 10: 200, 11: 200}
->>>>>>> ee4a516f9c5507bb156606e96c0390b6d977dfb9
+
 
     for idx,s in enumerate(seg):
         #cv2.imshow('Crop', s)
@@ -262,7 +279,7 @@ def segmentation_accuracy_func(pred,GT):
   #3 terms: #matched + #left_over_labels_in_GT + #extra/poor_labels in pred
   total_labels = num_matches + num_no_matches + max(0,(num_pred-num_GT))
   
-  return dice_value/total_labels, matched_images, 100*num_matches/num_GT, 100*num_matches/(num_GT+abs(num_pred-num_matches))
+  return dice_value/num_matches, matched_images, 100*num_matches/num_GT, 100*num_matches/(num_GT+abs(num_pred-num_matches))
 
 
 def classification_accuracy_func(pred,GT,matched):
@@ -370,12 +387,13 @@ if __name__ == '__main__':
 
     for idx, i in enumerate(all_labels):
         
+
         try:
             name = i.split(".")[0]
             print(name)
             img_path, label_path = f'{image_folder_path}/{name}.jpg', f'{label_folder_path}/{i}'
             #img_path,label_path = f"../Images_to_train_proper_labelling/174_0.jpg",f"../Labels_to_train_proper_labelling/174_0.txt"
-            a = baseline(img_path, label_path)
+            a = baseline(img_path, label_path,idx)
 
             if a is not None:
                 segmentation_accuracy_acc.append(a[0])

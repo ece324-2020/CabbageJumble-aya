@@ -17,7 +17,7 @@ device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 #model = torch.load("model2.pt")
 #model.to(device)
 #data_location = "Validation_noHT"
-data_location = "DATA"
+data_location = "test"
 
 model = coin_classifier(12)
 model.load_state_dict(torch.load("model_state_dict_model2.pt"))
@@ -34,23 +34,7 @@ R_mean,G_mean,B_mean,R_std,G_std,B_std = norm_info
 
 
 
-#data = "ex_image.jpg"
-data = "DATA/11/174_0-crop_6.jpg"
 
-
-image = plt.imread(data)
-#print(image.shape)
-transform = transforms.Compose([transforms.ToTensor(),transforms.Normalize(mean = [R_mean,G_mean,B_mean],std = [R_std,G_std,B_std])])
-
-image = transform(image)
-#print(image.shape)
-image = image.reshape(1,image.shape[0],image.shape[1],image.shape[2]).to(device)
-
-#prediction = model(image.float())
-#print(prediction)
-
-#arg_predict = torch.argmax(prediction,1).item()
-#print(arg_predict)
 
 
 transform = transforms.Compose([transforms.ToTensor(),transforms.Normalize(mean = [R_mean,G_mean,B_mean],std = [R_std,G_std,B_std])])
@@ -75,16 +59,13 @@ for idx, i in enumerate(dataloader):
         correct+=1
     num+=1
 
-    if torch.equal(in_data,image):
-        print("HAKREAFJLLASDJFLSADKFJLSADFJSAL")
-        print(arg_predict)
 
     #print(in_data.shape)
 print(correct/num)
 
 pred_vs_GT = np.array(pred_vs_GT)
 labels, prediction = pred_vs_GT[:, 0], pred_vs_GT[:, 1]
-r = confusion(labels, prediction, plot = True, plot3d = True, text = True, HT = True)
+r = confusion(label = labels, prediction = prediction, plot = True, plot3d = True, text = True, HT = True)
 print()
 print(r)
 print()

@@ -94,7 +94,9 @@ def crop_coin(img_file, label_file, save_crop: str = None, save_label: str = Non
 
         # Cut out square
         crop = coins[y-r-padding:y+r+padding, x-r-padding:x+r+padding]
-        crop = ResizeWithAspectRatio(crop, resize)
+        
+        #crop = ResizeWithAspectRatio(crop, resize)
+        crop = cv2.resize(crop,(resize,resize))
 
         if show:
             cv2.imshow(f'Cropped {i}', crop)
@@ -176,10 +178,10 @@ if __name__ == '__main__':
     # Edit these labels
     #img_path = '../Images_to_train_proper_labelling'
     #label_path = '../Labels_to_train_proper_labelling'
-    img_path = '../Augmented_images_180'
-    label_path = '../Augmented_labels_180'
-    save_crop = 'Baseline/Data_Images'
-    save_label = 'Baseline/Data_Labels'
+    img_path = 'TEST_DATA/images'
+    label_path = 'TEST_DATA/temp_labels'
+    save_crop = 'Baseline/test_images'
+    save_label = 'Baseline/test_labels'
 
     # Active code to crop coins
     crop_all_coins(img_path, label_path, save_crop, save_label)

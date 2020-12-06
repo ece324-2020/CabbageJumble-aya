@@ -11,7 +11,7 @@ import os
 import copy
 import matplotlib.pyplot as plt
 
-folder_path = "../../Fix_data/fix_data/train"
+folder_path = "../TEST_DATA/images"
 
 all_images = sorted(os.listdir(folder_path))
 

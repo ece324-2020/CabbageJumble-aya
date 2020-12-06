@@ -1,7 +1,7 @@
 
 #makes 12 folders
 
-for i in {0..5}
+for i in {0..11}
 do
-   mkdir Validation_noHT/$i
+   mkdir test/$i
 done
