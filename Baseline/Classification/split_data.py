@@ -1,7 +1,11 @@
 #example to run: py split_data.py --images_path ../Data_Images --labels_path ../Data_Labels --top_save_path DATA
 
 '''
-d
+Input: an image folder and a label folder where each txt file has the same name as the image. The txt file has a single number which is the class of the coin.
+Requires: a folder with 'x' folders where x is the number of classes. These 'x' folders must be labelled from 0 to x-1.
+Output: the original images are moved (not copied) to their respective class folder.
+
+Use: to get it into the same format torchvision's ImageFolder requries.
 
 '''
 
